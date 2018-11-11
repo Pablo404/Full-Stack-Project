@@ -20,7 +20,7 @@ const userController=require('./controllers/UserController');
 //const authController=require('./controllers/AuthController');
 const accountController=require('./controllers/AccountController');
 
-const port=process.env.PORT ||3000;
+const port=process.env.PORT||3000;
 app.listen(port);
 console.log("API escuchando en el puerto "+port);
 
