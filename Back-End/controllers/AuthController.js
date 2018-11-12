@@ -54,8 +54,8 @@ function login (req,res){
         }
       }
     }
-   )
-  }
+  )
+}
 
 
   function logoutV2 (req,res){
