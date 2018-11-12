@@ -28,6 +28,10 @@ function createUser (req, res) {
     console.log(req.body.DNI);
 
     var query='q={"email":"'+req.body.email+'"}';
+
+    var httpClient=requestJson.createClient(mlabBaseURL);
+    console.log("Client created");
+
     httpClient.get("user?"+query+"&"+mlabAPIKey,
       function(err,resMlab,body) {
         if(err){
@@ -84,7 +88,7 @@ function createUser (req, res) {
     )
   }
 
-  
+
 
 
 /*function getUserByIdV2 (req,res) {

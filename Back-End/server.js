@@ -34,9 +34,10 @@ app.get("/proyectotechu/hello",
 
 app.get("/proyectotechu/users", userController.getUsers);
 //app.get("/apitechu/v2/users/:id", userController.getUserByIdV2);
-app.get("/proyectotechu/accounts/:email", accountController.getAccountByUserEmail);
-app.get("/proyectotechu/IBAN", accountController.getIBAN);
+app.get("/proyectotechu/accounts/:email", accountController.getAccountsByUserEmail);
+//app.get("/proyectotechu/IBAN", accountController.getIBAN);
 app.post("/proyectotechu/users",userController.createUser);
+app.post("/proyectotechu/accounts/:email",accountController.createAccount);
 //app.delete("/apitechu/v1/users/:id", userController.deleteUserV1);
 
 

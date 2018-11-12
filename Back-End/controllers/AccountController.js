@@ -7,7 +7,7 @@ const mlabAPIKey="apiKey="+process.env.MLAB_API_KEY;
 const mockAPIKey="key="+process.env.MOCK_API_KEY;
 
 
-function getIBAN (req,res) {
+/*function getIBAN (req,res) {
   console.log("GET /IBAN");
 
   var httpClient=requestJson.createClient(mockBaseURL);
@@ -20,10 +20,40 @@ function getIBAN (req,res) {
       res.send(response);
     }
   )
-}
+} */
+
+function createAccount (req, res) {
+    console.log("POST /proyectotechu/accounts/:email");
+
+    var httpClientMock=requestJson.createClient(mockBaseURL);
+    console.log("Client Mock created");
+
+    httpClientMock.get("IBAN?"+mockAPIKey,
+      function(err,resMlab,body) {
+        response= !err ?
+          body : {"msg":"Error obteniendo IBAN"}
+          console.log(response);
+          var newAccount={
+            "IBAN":response.IBAN,
+            "email":req.params.email
+          };
+
+          var httpClient=requestJson.createClient(mlabBaseURL);
+          console.log("Client created");
+
+          httpClient.post("account?"+mlabAPIKey, newAccount,
+            function(err,resMlab,body) {
+              console.log("Cuenta guardada con éxito");
+              res.status(201);
+              res.send({"msg":"Cuenta guardada con éxito"});
+            }
+          )
+        }
+      )
+    }
 
 
-function getAccountByUserEmail (req,res) {
+function getAccountsByUserEmail (req,res) {
   console.log("GET /proyectotechu/accounts/:email");
 
   var email=req.params.email;
@@ -33,16 +63,16 @@ function getAccountByUserEmail (req,res) {
   console.log("Client created");
 
   httpClient.get("account?"+query + "&" + mlabAPIKey,
-    function(err,resMlab,body) {
-      if (err) {
-        var response= {
+    function(err,resMlab,body){
+      if (err){
+        var response={
           "msg":"Error obteniendo cuenta"
         };
         res.status(500);
-      } else {
-        if (body.length > 0) {
+      }else{
+        if(body.length > 0){
           var response=body;
-        } else {
+        }else{
           var response={
             "msg":"Usuario no encontrado"
           };
@@ -144,5 +174,6 @@ users.forEach(function(valor,indice){
 
 
 
-    module.exports.getAccountByUserEmail=getAccountByUserEmail;
-    module.exports.getIBAN=getIBAN;
+    module.exports.getAccountsByUserEmail=getAccountsByUserEmail;
+    //module.exports.getIBAN=getIBAN;
+    module.exports.createAccount=createAccount;
