@@ -17,7 +17,7 @@ app.use(enableCORS);
 
 
 const userController=require('./controllers/UserController');
-//const authController=require('./controllers/AuthController');
+const authController=require('./controllers/AuthController');
 const accountController=require('./controllers/AccountController');
 
 const port=process.env.PORT||3000;
@@ -38,6 +38,7 @@ app.get("/proyectotechu/accounts/:email", accountController.getAccountsByUserEma
 //app.get("/proyectotechu/IBAN", accountController.getIBAN);
 app.post("/proyectotechu/users",userController.createUser);
 app.post("/proyectotechu/accounts/:email",accountController.createAccount);
+app.post("/proyectotechu/login",authController.login);
 //app.delete("/apitechu/v1/users/:id", userController.deleteUserV1);
 
 

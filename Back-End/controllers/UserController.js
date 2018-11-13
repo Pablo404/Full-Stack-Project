@@ -28,6 +28,7 @@ function createUser (req, res) {
     console.log(req.body.DNI);
 
     var query='q={"email":"'+req.body.email+'"}';
+    console.log(query);
 
     var httpClient=requestJson.createClient(mlabBaseURL);
     console.log("Client created");

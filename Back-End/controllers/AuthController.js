@@ -18,9 +18,9 @@ function login (req,res){
   httpClient.get("user?"+query+"&"+mlabAPIKey,
     function(err,resMlab,body) {
       if(err){
-        console.log("Error obteniendo usuario");
+        console.log("Error al entrar en el sistema");
         res.status(500);
-        res.send({"msg":"Error obteniendo usuario"});
+        res.send({"msg":"Error al entrar en el sistema"});
       }else{
         if(body.length>0){
           var response=body;
@@ -105,7 +105,5 @@ function login (req,res){
     }
 
 
-module.exports.loginV1=loginV1;
-module.exports.logoutV1=logoutV1;
-module.exports.loginV2=loginV2;
-module.exports.logoutV2=logoutV2;
+module.exports.login=login;
+//module.exports.logoutV2=logoutV2;
