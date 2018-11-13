@@ -21,36 +21,37 @@ const mockAPIKey="key="+process.env.MOCK_API_KEY;
     }
   )
 } */
-
 function createAccount (req, res) {
-    console.log("POST /proyectotechu/accounts/:email");
+  console.log("POST /proyectotechu/accounts");
 
-    var httpClientMock=requestJson.createClient(mockBaseURL);
-    console.log("Client Mock created");
+  var httpClientMock=requestJson.createClient(mockBaseURL);
+  console.log("Client Mock created");
 
-    httpClientMock.get("IBAN?"+mockAPIKey,
-      function(err,resMlab,body) {
-        response= !err ?
-          body : {"msg":"Error obteniendo IBAN"}
-          console.log(response);
-          var newAccount={
-            "IBAN":response.IBAN,
-            "email":req.params.email
-          };
+  httpClientMock.get("IBAN?"+mockAPIKey,
+    function(err,resMlab,body) {
+      response= !err ?
+        body : {"msg":"Error obteniendo IBAN"}
+        console.log(response);
+        var newAccount={
+          "name":req.body.name,
+          "IBAN":response.IBAN,
+          "email":req.body.email,
+          "balance":req.body.balance
+        };
 
-          var httpClient=requestJson.createClient(mlabBaseURL);
-          console.log("Client created");
+        var httpClient=requestJson.createClient(mlabBaseURL);
+        console.log("Client created");
 
-          httpClient.post("account?"+mlabAPIKey, newAccount,
-            function(err,resMlab,body) {
-              console.log("Cuenta guardada con éxito");
-              res.status(201);
-              res.send({"msg":"Cuenta guardada con éxito"});
-            }
-          )
-        }
-      )
-    }
+        httpClient.post("account?"+mlabAPIKey, newAccount,
+          function(err,resMlab,body) {
+            console.log("Cuenta guardada con éxito");
+            res.status(201);
+            res.send({"msg":"Cuenta guardada con éxito"});
+          }
+        )
+      }
+    )
+  }
 
 
 function getAccountsByUserEmail (req,res) {

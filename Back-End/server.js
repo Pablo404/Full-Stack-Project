@@ -2,24 +2,19 @@
 const express=require('express');
 const app=express();
 app.use(express.json());
-
 require('dotenv').config();
 
 var enableCORS = function(req, res, next) {
- // No producción!!!11!!!11one!!1!
  res.set("Access-Control-Allow-Origin", "*");
  res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
  res.set("Access-Control-Allow-Headers", "Content-Type");
-
  next();
 }
 app.use(enableCORS);
 
-
 const userController=require('./controllers/UserController');
 const authController=require('./controllers/AuthController');
 const accountController=require('./controllers/AccountController');
-
 const port=process.env.PORT||3000;
 app.listen(port);
 console.log("API escuchando en el puerto "+port);
@@ -31,14 +26,14 @@ app.get("/proyectotechu/hello",
     res.send({"msg":"Hola desde Proyecto TechU!"});
   }
 );
-
 app.get("/proyectotechu/users", userController.getUsers);
 //app.get("/apitechu/v2/users/:id", userController.getUserByIdV2);
 app.get("/proyectotechu/accounts/:email", accountController.getAccountsByUserEmail);
 //app.get("/proyectotechu/IBAN", accountController.getIBAN);
 app.post("/proyectotechu/users",userController.createUser);
-app.post("/proyectotechu/accounts/:email",accountController.createAccount);
+app.post("/proyectotechu/accounts",accountController.createAccount);
 app.post("/proyectotechu/login",authController.login);
+app.post("/proyectotechu/logout",authController.logout);
 //app.delete("/apitechu/v1/users/:id", userController.deleteUserV1);
 
 

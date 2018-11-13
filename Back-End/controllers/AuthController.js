@@ -18,9 +18,9 @@ function login (req,res){
   httpClient.get("user?"+query+"&"+mlabAPIKey,
     function(err,resMlab,body) {
       if(err){
-        console.log("Error al entrar en el sistema");
+        console.log("Error al iniciar sesión");
         res.status(500);
-        res.send({"msg":"Error al entrar en el sistema"});
+        res.send({"msg":"Error al iniciar sesión"});
       }else{
         if(body.length>0){
           var response=body;
@@ -29,15 +29,13 @@ function login (req,res){
           console.log(req.body.password);
           if (crypt.checkpassword(req.body.password,response[0].password)) {
             console.log("contraseña correcta");
-
-            //var query2='q={"email":'+response[0].email+'}';
             var putBody= '{"$set":{"logged":true}}';
             httpClient.put("user?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
               function(errPUT,resMlabPUT,bodyPUT) {
-                console.log("Usuario logeado con éxito");
+                console.log("Sesión iniciada con éxito");
                 res.status(200);
                 var response ={
-                  "msg":"Usuario logeado con exito"
+                  "msg":"Sesión iniciada con exito"
                 }
                 res.send(response);
               }
@@ -58,52 +56,38 @@ function login (req,res){
 }
 
 
-  function logoutV2 (req,res){
-    console.log("POST /apitechu/v2/logout/:id");
-    console.log(req.params.id);
+function logout (req,res){
+  console.log("POST /proyectotechu/logout");
 
-    var httpClient=requestJson.createClient(mlabBaseURL);
-    console.log("Client created");
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+  var query='q={"email":"'+req.body.email+'"}';
+  console.log(query);
 
-    var query='q={"id":'+req.params.id+'}';
-    console.log(query);
-    httpClient.get("user?"+query+"&"+mlabAPIKey,
-    function(err,resMlab,body) {
-      if(err){
-        console.log("Error deslogeando usuario");
-        res.send({"msg":"Error deslogeando usuario"});
-        res.status(500);
-      }else{
-        if(body.length>0){
-          var response=body;
-          console.log(body);
-            console.log(response);
-            console.log(response[0].id);
-            console.log(response[0].logged);
-            if(response[0].logged) {
-
-            var putBody='{"$unset":{"logged":""}}';
-            var query2='q={"id":'+response[0].id+'}';
-            httpClient.put("user?"+query2+"&"+mlabAPIKey, JSON.parse(putBody),
-              function(err,resMlab,body) {
-                console.log("Usuario deslogeado con éxito");
-                res.status(200);
-                res.send({"msg":"Usuario deslogeado con éxito"});
-              }
-            )
-          }else{
-            res.send({"msg":"El usuario no estaba logeado"});
-          }
+  httpClient.get("user?"+query+"&"+mlabAPIKey,
+  function(err,resMlab,body) {
+    if(err){
+      console.log("Error al cerrar sesión");
+      res.send({"msg":"Error al cerrar sesión"});
+      res.status(500);
     }else{
-      console.log("No se encuentra el usuario");
-      res.send({"msg":"No se encuentra el usuario"});
-      res.status(404);
+        var response=body;
+        console.log(body);
+        console.log(response);
+        console.log(response[0].logged);
+        var putBody='{"$unset":{"logged":""}}';
+        httpClient.put("user?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
+        function(err,resMlab,body) {
+          console.log("Usuario deslogeado con éxito");
+          res.status(200);
+          res.send({"msg":"Usuario deslogeado con éxito"});
+        }
+      )
     }
-    }
-    }
-     )
-    }
+  }
+  )
+}
 
 
 module.exports.login=login;
-//module.exports.logoutV2=logoutV2;
+module.exports.logout=logout;
