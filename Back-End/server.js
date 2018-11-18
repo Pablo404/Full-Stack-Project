@@ -15,6 +15,7 @@ app.use(enableCORS);
 const userController=require('./controllers/UserController');
 const authController=require('./controllers/AuthController');
 const accountController=require('./controllers/AccountController');
+const transactionController=require('./controllers/TransactionController')
 const port=process.env.PORT||3000;
 app.listen(port);
 console.log("API escuchando en el puerto "+port);
@@ -32,6 +33,8 @@ app.get("/proyectotechu/accounts/:email", accountController.getAccountsByUserEma
 //app.get("/proyectotechu/IBAN", accountController.getIBAN);
 app.post("/proyectotechu/users",userController.createUser);
 app.post("/proyectotechu/accounts",accountController.createAccount);
+app.put("/proyectotechu/accounts",accountController.modifyAccount);
+app.post("/proyectotechu/transactions",transactionController.createTransaction);
 app.post("/proyectotechu/login",authController.login);
 app.post("/proyectotechu/logout",authController.logout);
 //app.delete("/apitechu/v1/users/:id", userController.deleteUserV1);

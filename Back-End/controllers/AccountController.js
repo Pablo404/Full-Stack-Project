@@ -1,5 +1,4 @@
 
-const crypt=require('../crypt');
 const requestJson=require('request-json');
 const mlabBaseURL="https://api.mlab.com/api/1/databases/proyectotechu/collections/";
 const mockBaseURL="https://my.api.mockaroo.com/";
@@ -54,6 +53,41 @@ function createAccount (req, res) {
   }
 
 
+function modifyAccount (req,res) {
+  console.log("PUT /proyectotechu/accounts");
+
+  var query='q={"IBAN":"'+req.body.IBAN+'"}';
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("account?"+query + "&" + mlabAPIKey,
+  function(err,resMlab,body){
+    if (err){
+      var response={
+        "msg":"Error modificando cuenta"
+      };
+      res.status(500);
+    }else{
+      if (body.length>0){
+        var newBalance=body[0].balance+req.body.amount;
+        var putBody= '{"$set":{"balance":'+newBalance+'}}';
+        httpClient.put("account?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
+          function(errPUT,resMlabPUT,bodyPUT) {
+            console.log("Saldo de la cuenta actualizado");
+          }
+        )
+      }else{
+        var response={
+          "msg":"El usuario no tienen ninguna cuenta asociada"
+        }
+        res.status(404);
+      }
+    }
+    }
+  )
+}
+
+
 function getAccountsByUserEmail (req,res) {
   console.log("GET /proyectotechu/accounts/:email");
 
@@ -88,63 +122,6 @@ function getAccountsByUserEmail (req,res) {
 
 
 
-
-  /* function createUserV1 (req, res) {
-    console.log("POST /apitechu/v1/users");
-
-    //console.log(req.headers);
-    console.log(req.body.first_name);
-    console.log(req.body.last_name);
-    console.log(req.body.email);
-    console.log(req.body.password);
-    console.log(req.body.id);
-
-    var newUser={
-      "id":req.body.id,
-      "first_name":req.body.first_name,
-      "last_name":req.body.last_name,
-      "email":req.body.email,
-      "password":req.body.password
-    };
-    var users=require("../prueba.json");
-    users.push (newUser);
-
-    io.writeUserDataToFileLogin(users);
-
-    res.send("Usuario añadido con éxito");
-  }   */
-
-
-  /* function createUserV2 (req, res) {
-      console.log("POST /apitechu/v2/users");
-
-      console.log(req.body.first_name);
-      console.log(req.body.last_name);
-      console.log(req.body.email);
-      console.log(req.body.password);
-      console.log(req.body.id);
-
-      var newUser={
-        "id":req.body.id,
-        "first_name":req.body.first_name,
-        "last_name":req.body.last_name,
-        "email":req.body.email,
-        "password":crypt.hash(req.body.password)
-      };
-
-      var httpClient=requestJson.createClient(mlabBaseURL);
-      console.log("Client created");
-
-      httpClient.post("user?"+mlabAPIKey, newUser,
-        function(err,resMlab,body) {
-          console.log("Usuario guardado con éxito");
-          res.status(201);
-          res.send({"msg":"Usuario creado con éxito"});
-
-       }
-     )
-   } */
-
   /* function deleteUserV1(req, res) {
   console.log("DELETE /apitechu/v1/users/:id");
   console.log("La id enviada es: "+ req.params.id);
@@ -175,6 +152,7 @@ users.forEach(function(valor,indice){
 
 
 
-    module.exports.getAccountsByUserEmail=getAccountsByUserEmail;
+module.exports.getAccountsByUserEmail=getAccountsByUserEmail;
     //module.exports.getIBAN=getIBAN;
-    module.exports.createAccount=createAccount;
+module.exports.createAccount=createAccount;
+module.exports.modifyAccount=modifyAccount;
