@@ -6,8 +6,7 @@ const mlabAPIKey="apiKey="+process.env.MLAB_API_KEY;
 const accountController=require('./AccountController');
 
 function createTransaction (req,res){
-
-  if (req.body.type=="Deposit Money" || req.body.type=="Take money"){
+  if (req.body.type=="Deposit Money"){
     var date=Date();
     var newTransaction={
       "date":date,
@@ -18,28 +17,84 @@ function createTransaction (req,res){
 
     var httpClient=requestJson.createClient(mlabBaseURL);
     console.log("Client created");
-
-    accountController.modifyAccount(req,res);
-    if (res.status==500 || res.status==404){
-      res.send(response);
-    }else{
       httpClient.post("transaction?"+mlabAPIKey, newTransaction,
       function(err,resMlab,body) {
         console.log("Transacción guardada con éxito");
         res.status(201);
         res.send({"msg":"Transacción guardada con éxito"});
+        accountController.modifyAccount(req,res);
       }
     )
+  }else if(req.body.type=="Take Money"){
+    req.body.amount=(-1)*(req.body.amount);
+    var query='q={"IBAN":"'+req.body.IBAN+'"}';
+    var httpClient=requestJson.createClient(mlabBaseURL);
+    console.log("Client created");
+
+    httpClient.get("account?"+query + "&" + mlabAPIKey,
+    function(err,resMlab,body){
+      if(body[0].balance<(-1)*(req.body.amount)){
+        res.send({"msg":"No hay saldo suficiente en la cuenta"});
+      }else{
+        var date=Date();
+        var newTransaction={
+          "date":date,
+          "type":req.body.type,
+          "IBAN":req.body.IBAN,
+          "amount":req.body.amount
+        };
+
+          httpClient.post("transaction?"+mlabAPIKey, newTransaction,
+          function(err,resMlab,body) {
+            console.log("Transacción guardada con éxito");
+            res.status(201);
+            res.send({"msg":"Transacción guardada con éxito"});
+            accountController.modifyAccount(req,res);
+          }
+        )
+      }
     }
+  )
   }else{
-    var date=Date();
-    var newTransaction={
-      "date":date,
-      "type":req.body.type,
-      "IBAN1":req.body.IBAN1,
-      "IBAN2":req.body.IBAN2,
-      "amount":req.body.amount
-    }
+    var query1='q={"IBAN":"'+req.body.IBAN1+'"}';
+    var query2='q={"IBAN":"'+req.body.IBAN2+'"}';
+    var httpClient=requestJson.createClient(mlabBaseURL);
+    console.log("Client created");
+
+    httpClient.get("account?"+query1 + "&" + mlabAPIKey,
+    function(err,resMlab,body){
+      if(body.length>0){
+        httpClient.get("account?"+query2 + "&" + mlabAPIKey,
+        function(err,resMlab,body){
+          if(body[0].balance<req.body.amount){
+            res.send({"msg":"No hay saldo suficiente en la cuenta"});
+          }else{
+            var date=Date();
+            var newTransaction={
+              "date":date,
+              "type":req.body.type,
+              "IBAN1":req.body.IBAN1,
+              "IBAN2":req.body.IBAN2,
+              "amount":req.body.amount
+            };
+
+            httpClient.post("transaction?"+mlabAPIKey, newTransaction,
+            function(err,resMlab,body) {
+              console.log("Transacción guardada con éxito");
+              res.status(201);
+              res.send({"msg":"Transacción guardada con éxito"});
+              accountController.modifyTwoAccounts(req,res);
+            }
+          )
+        }
+      }
+    )
+  }else{
+    res.status(404);
+    res.send({"msg":"El IBAN de destino no está asociado a ninguna cuenta"});
+  }
+}
+)
   }
 }
 

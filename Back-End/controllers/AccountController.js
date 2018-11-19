@@ -54,38 +54,64 @@ function createAccount (req, res) {
 
 
 function modifyAccount (req,res) {
-  console.log("PUT /proyectotechu/accounts");
+console.log("PUT /proyectotechu/accounts");
 
-  var query='q={"IBAN":"'+req.body.IBAN+'"}';
-  var httpClient=requestJson.createClient(mlabBaseURL);
-  console.log("Client created");
+var query='q={"IBAN":"'+req.body.IBAN+'"}';
+var httpClient=requestJson.createClient(mlabBaseURL);
+console.log("Client created");
 
-  httpClient.get("account?"+query + "&" + mlabAPIKey,
-  function(err,resMlab,body){
-    if (err){
-      var response={
-        "msg":"Error modificando cuenta"
-      };
-      res.status(500);
-    }else{
-      if (body.length>0){
-        var newBalance=body[0].balance+req.body.amount;
-        var putBody= '{"$set":{"balance":'+newBalance+'}}';
-        httpClient.put("account?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
-          function(errPUT,resMlabPUT,bodyPUT) {
-            console.log("Saldo de la cuenta actualizado");
-          }
-        )
-      }else{
-        var response={
-          "msg":"El usuario no tienen ninguna cuenta asociada"
+httpClient.get("account?"+query + "&" + mlabAPIKey,
+function(err,resMlab,body){
+      console.log(body.length);
+      var newBalance=body[0].balance+req.body.amount;
+      var putBody= '{"$set":{"balance":'+newBalance+'}}';
+      httpClient.put("account?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
+        function(errPUT,resMlabPUT,bodyPUT) {
+          console.log("Saldo de la cuenta actualizado");
         }
-        res.status(404);
-      }
-    }
+      )
     }
   )
 }
+
+function modifyTwoAccounts (req,res) {
+  console.log("PUT /proyectotechu/accounts");
+  console.log("PUT /proyectotechu/accounts");
+
+  var query1='q={"IBAN":"'+req.body.IBAN1+'"}';
+  var query2='q={"IBAN":"'+req.body.IBAN2+'"}';
+  var amount1=req.body.amount;
+  var amount2=(-1)*(req.body.amount);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("account?"+query1 + "&" + mlabAPIKey,
+  function(err,resMlab,body){
+        console.log(body.length);
+        var newBalance1=body[0].balance+amount1;
+        var putBody1= '{"$set":{"balance":'+newBalance1+'}}';
+        httpClient.put("account?"+query1+"&"+mlabAPIKey, JSON.parse(putBody1),
+          function(errPUT,resMlabPUT,bodyPUT) {
+            console.log("Saldo de la cuenta 1 actualizado");
+          }
+        )
+      }
+    )
+  httpClient.get("account?"+query2 + "&" + mlabAPIKey,
+  function(err,resMlab,body){
+        console.log(body.length);
+        var newBalance2=body[0].balance+amount2;
+        var putBody2= '{"$set":{"balance":'+newBalance2+'}}';
+        httpClient.put("account?"+query2+"&"+mlabAPIKey, JSON.parse(putBody2),
+          function(errPUT,resMlabPUT,bodyPUT) {
+            console.log("Saldo de la cuenta 2 actualizado");
+          }
+        )
+      }
+    )
+
+  }
 
 
 function getAccountsByUserEmail (req,res) {
@@ -156,3 +182,4 @@ module.exports.getAccountsByUserEmail=getAccountsByUserEmail;
     //module.exports.getIBAN=getIBAN;
 module.exports.createAccount=createAccount;
 module.exports.modifyAccount=modifyAccount;
+module.exports.modifyTwoAccounts=modifyTwoAccounts;
