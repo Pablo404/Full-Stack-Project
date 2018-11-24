@@ -5,6 +5,36 @@ const mlabAPIKey="apiKey="+process.env.MLAB_API_KEY;
 
 const accountController=require('./AccountController');
 
+function getTransactions (req,res){
+  var query='q={"$or":[{"IBAN":"'+req.body.IBAN+'"},{"IBAN1":"'+req.body.IBAN+'"},{"IBAN2":"'+req.body.IBAN+'"}]}';
+  console.log(query);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("transaction?"+query+"&"+mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo movimientos"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Transacciones no encontradas"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
 function createTransaction (req,res){
   if (req.body.type=="Deposit Money"){
     var date=Date();
@@ -73,6 +103,7 @@ function createTransaction (req,res){
             var newTransaction={
               "date":date,
               "type":req.body.type,
+              "concept":req.body.concept,
               "IBAN1":req.body.IBAN1,
               "IBAN2":req.body.IBAN2,
               "amount":req.body.amount
@@ -99,3 +130,4 @@ function createTransaction (req,res){
 }
 
 module.exports.createTransaction=createTransaction;
+module.exports.getTransactions=getTransactions;
