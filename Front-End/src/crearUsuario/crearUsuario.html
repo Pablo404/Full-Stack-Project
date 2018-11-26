@@ -1,0 +1,109 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="crear-usuario">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>Crear Usuario</h2>
+    <br>
+    <form>
+      <input placeholder="Nombre" type="String" value="{{first_name::input}}" required><br>
+      <input placeholder="Apellidos" type="String" value="{{last_name::input}}" required><br>
+      <input placeholder="DNI" type="String" value="{{dni::input}}" required><br>
+      <input placeholder="Email" type="String" value="{{email::input}}" required><br>
+      <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
+      <button on-click="createUser" type="submit" class="btn btn-primary">Crear</button>
+      <button type="button" class="btn btn-secondary">Inicio</button>
+    </form>
+    <span hidden$="{{!error}}">Error. Ya existe un usuario registrado con ese email y/o contraseña</span>
+
+    <iron-ajax
+    id="crearUsuario"
+    url="http://localhost:3000/proyectotechu/users"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse"
+    on-error="showError"
+    />
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CrearUsuario extends Polymer.Element {
+      static get is() { return 'crear-usuario'; }
+      static get properties() {
+        return {
+          first_name:{
+            type:String
+          }, last_name:{
+            type:String
+          }, dni:{
+            type:String
+          }, email:{
+            type:String
+          }, password:{
+            type:String
+          }, error:{
+            type:Boolean,
+            value:false
+          }
+        };
+      }
+
+      createUser () {
+        console.log("El usuario ha pulsado el botón");
+        console.log("Voy a enviar la petición");
+
+        if(this.first_name&&this.last_name&&this.dni&&this.password){
+        console.log(this.first_name);
+        console.log(this.last_name);
+        console.log(this.dni);
+        console.log(this.email);
+        console.log(this.password);
+
+
+        var userData= {
+          "first_name":this.first_name,
+          "last_name":this.last_name,
+          "DNI":this.dni,
+          "email": this.email,
+          "password" : this.password
+        };
+
+        this.$.crearUsuario.body = JSON.stringify(userData);
+        this.$.crearUsuario.generateRequest();
+
+        console.log("Petición enviada");
+      }else{
+      console.log("Ha habido error");
+    }
+  }
+
+
+      manageAJAXResponse (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+      }
+
+      showError (error) {
+        console.log("Ha habido un error");
+        console.log(error);
+        //this.error=true;
+      }
+    }
+
+    window.customElements.define(CrearUsuario.is, CrearUsuario);
+  </script>
+</dom-module>
