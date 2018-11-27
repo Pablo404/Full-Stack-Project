@@ -13,16 +13,15 @@
 
     <h2>Crear Usuario</h2>
     <br>
-    <form>
-      <input placeholder="Nombre" type="String" value="{{first_name::input}}" required><br>
-      <input placeholder="Apellidos" type="String" value="{{last_name::input}}" required><br>
-      <input placeholder="DNI" type="String" value="{{dni::input}}" required><br>
-      <input placeholder="Email" type="String" value="{{email::input}}" required><br>
-      <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
-      <button on-click="createUser" type="submit" class="btn btn-primary">Crear</button>
-      <button type="button" class="btn btn-secondary">Inicio</button>
-    </form>
+    <input placeholder="Nombre" type="String" value="{{first_name::input}}" required><br>
+    <input placeholder="Apellidos" type="String" value="{{last_name::input}}" required><br>
+    <input placeholder="DNI" type="String" value="{{dni::input}}" required><br>
+    <input placeholder="Email" type="email" value="{{email::input}}" required><br>
+    <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
+    <button on-click="createUser" type="button" class="btn btn-primary">Crear</button>
+    <button type="button" class="btn btn-secondary">Inicio</button>
     <span hidden$="{{!error}}">Error. Ya existe un usuario registrado con ese email y/o contraseña</span>
+    <span hidden$="{{!vacio}}">Todos los campos son obligatorios</span>
 
     <iron-ajax
     id="crearUsuario"
@@ -58,49 +57,56 @@
           }, error:{
             type:Boolean,
             value:false
+          }, vacio:{
+            type:Boolean,
+            value:false
           }
         };
       }
 
       createUser () {
         console.log("El usuario ha pulsado el botón");
-        console.log("Voy a enviar la petición");
+        this.error=false;
+        this.vacio=false;
 
-        if(this.first_name&&this.last_name&&this.dni&&this.password){
-        console.log(this.first_name);
-        console.log(this.last_name);
-        console.log(this.dni);
-        console.log(this.email);
-        console.log(this.password);
+        if(this.first_name&&this.last_name&&this.dni&&this.email&&this.password){
+          console.log("Voy a enviar la petición");
+          console.log(this.first_name);
+          console.log(this.last_name);
+          console.log(this.dni);
+          console.log(this.email);
+          console.log(this.password);
 
 
-        var userData= {
-          "first_name":this.first_name,
-          "last_name":this.last_name,
-          "DNI":this.dni,
-          "email": this.email,
-          "password" : this.password
-        };
+          var userData= {
+            "first_name":this.first_name,
+            "last_name":this.last_name,
+            "DNI":this.dni,
+            "email": this.email,
+            "password" : this.password
+          };
 
-        this.$.crearUsuario.body = JSON.stringify(userData);
-        this.$.crearUsuario.generateRequest();
+          this.$.crearUsuario.body = JSON.stringify(userData);
+          this.$.crearUsuario.generateRequest();
 
-        console.log("Petición enviada");
-      }else{
-      console.log("Ha habido error");
-    }
-  }
+          console.log("Petición enviada");
+        }else{
+          console.log("Faltan campos por rellenar");
+          this.vacio=true;
+        }
+      }
 
 
       manageAJAXResponse (data) {
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response);
+        // window.location="user/" + data.detail.response.idUsuario;
       }
 
       showError (error) {
         console.log("Ha habido un error");
         console.log(error);
-        //this.error=true;
+        this.error=true;
       }
     }
 

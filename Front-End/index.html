@@ -9,6 +9,8 @@
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
@@ -16,7 +18,15 @@
     <link rel="import" href="/src/crearUsuario/crearUsuario.html">
   </head>
   <body>
-    <!--<login-usuario></login-usuario> -->
+    <h1>¡Bienvenido a BBVA!</h1>
+    <button type="button" class="btn btn-primary btn-lg">Accede a tu área personal</button>
+    <br>
+    <br>
+    <br>
+    <span class="font-weight-light font-italic">¿Aún no estás registrado?</span>
+    <br>
+    <button type="button" class="btn btn-primary btn-lg">Regístrate</button>
+    <login-usuario></login-usuario>
     <crear-usuario></crear-usuario>
   </body>
 </html>

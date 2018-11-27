@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="login-usuario">
   <template>
@@ -7,7 +8,27 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>Acceda a su área personal</h2>
+    <br>
+    <input placeholder="Email" type="email" value="{{email::input}}" required><br>
+    <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
+    <button on-click="login" type="button" class="btn btn-primary">Entrar</button>
+    <button type="button" class="btn btn-secondary">Inicio</button>
+    <span hidden$="{{!vacio}}">Debe introducir su email y contraseña</span>
+    <span hidden$="{{!error}}">Error. Email y/o contraseña incorrecto/s</span>
+
+    <iron-ajax
+    id="doLogin"
+    url="http://localhost:3000/proyectotechu/login"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse"
+    on-error="showError"
+    />
+
   </template>
 
   <script>
@@ -19,12 +40,64 @@
       static get is() { return 'login-usuario'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'Hola'
+          email: {
+            type: String
+          }, password: {
+            type:String
+          }, vacio: {
+            type: Boolean,
+            value:false
+          }, error: {
+            type: Boolean,
+            value:false
+          },isLogged: {
+            type: Boolean,
+            value:false
           }
         };
       }
+
+      login () {
+        console.log("El usuario ha pulsado el botón");
+        this.error=false;
+        this.vacio=false;
+
+        if(this.email&&this.password){
+        console.log("Voy a enviar la petición");
+        console.log(this.email);
+        console.log(this.password);
+
+        var loginData= {
+          "email": this.email,
+          "password" : this.password
+        };
+
+        this.$.doLogin.body = JSON.stringify(loginData);
+        this.$.doLogin.generateRequest();
+
+        console.log("Petición enviada");
+      }else{
+        console.log("Faltan campos por rellenar");
+        this.vacio=true;
+      }
+      }
+
+      manageAJAXResponse (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+
+        this.isLogged=true;
+        console.log(this.isLogged);
+        // window.location="user/" + data.detail.response.idUsuario;
+      }
+
+      showError (error) {
+        console.log("Ha habido un error");
+        console.log(error);
+        this.error=true
+        this.isLogged=false;
+      }
+
     }
 
     window.customElements.define(LoginUsuario.is, LoginUsuario);
