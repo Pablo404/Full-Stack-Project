@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="usuario-creado">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>¡ENHORABUENA [[first_name]] [[last_name]]!</h2>
+    <h4>Te has registrado correctamente</h4>
+    <br>
+    <button  type="button" class="btn btn-primary">Accede a tu espacio personal</button>
+    <button  type="button" class="btn btn-secondary">Inicio</button>
+
+    <iron-ajax auto
+    id="created"
+    url="http://localhost:3000/proyectotechu/users/{{dni}}"
+    handle-as="json"
+    on-response="showData"
+    />
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class UsuarioCreado extends Polymer.Element {
+      static get is() { return 'usuario-creado'; }
+      static get properties() {
+        return {
+          first_name: {
+            type: String
+          }, last_name: {
+            type: String
+          }, dni: {
+            type:String
+          }
+        };
+      }
+
+      /*login () {
+        console.log("El usuario ha pulsado el botón");
+        this.error=false;
+        this.vacio=false;
+
+        if(this.email&&this.password){
+        console.log("Voy a enviar la petición");
+        console.log(this.email);
+        console.log(this.password);
+
+        var loginData= {
+          "email": this.email,
+          "password" : this.password
+        };
+
+        this.$.doLogin.body = JSON.stringify(loginData);
+        this.$.doLogin.generateRequest();
+
+        console.log("Petición enviada");
+      }else{
+        console.log("Faltan campos por rellenar");
+        this.vacio=true;
+      }
+    }*/
+
+      showData (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+
+        this.first_name=data.detail.response[0].first_name;
+        this.last_name=data.detail.response[0].last_name;
+      }
+    }
+
+    window.customElements.define(UsuarioCreado.is, UsuarioCreado);
+  </script>
+</dom-module>

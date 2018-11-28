@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="prueba-prueba">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>¡ENHORABUENA [[first_name]] [[last_name]]!</h2>
+    <h4>Te has registrado correctamente</h4>
+    <br>
+    <button  type="button" class="btn btn-primary">Accede a tu espacio personal</button>
+    <button  type="button" class="btn btn-secondary">Inicio</button>
+
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class Prueba extends Polymer.Element {
+      static get is() { return 'prueba-prueba'; }
+      static get properties() {
+        return {
+          first_name: {
+            type: String,
+            value:'Pablo'
+          }, last_name: {
+            type: String,
+            value:'Celada'
+          },
+        };
+      }
+
+      /*login () {
+        console.log("El usuario ha pulsado el botón");
+        this.error=false;
+        this.vacio=false;
+
+        if(this.email&&this.password){
+        console.log("Voy a enviar la petición");
+        console.log(this.email);
+        console.log(this.password);
+
+        var loginData= {
+          "email": this.email,
+          "password" : this.password
+        };
+
+        this.$.doLogin.body = JSON.stringify(loginData);
+        this.$.doLogin.generateRequest();
+
+        console.log("Petición enviada");
+      }else{
+        console.log("Faltan campos por rellenar");
+        this.vacio=true;
+      }
+    }*/
+
+    }
+
+    window.customElements.define(Prueba.is, Prueba);
+  </script>
+</dom-module>

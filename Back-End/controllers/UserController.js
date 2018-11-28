@@ -19,6 +19,38 @@ function getUsers (req,res) {
   )
 }
 
+function getUsersByEmail (req,res) {
+  console.log("GET /proyectotechu/users/:email");
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+  var query='q={"email":"'+req.params.email+'"}';
+
+  httpClient.get("user?"+query+"&"+mlabAPIKey,
+    function(err,resMlab,body) {
+      var response= !err ?
+        body : {"msg":"Error obteniendo usuarios"}
+      res.send(response);
+    }
+  )
+}
+
+function getUsersByDni (req,res) {
+  console.log("GET /proyectotechu/users/:dni");
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+  var query='q={"DNI":"'+req.params.dni+'"}';
+
+  httpClient.get("user?"+query+"&"+mlabAPIKey,
+    function(err,resMlab,body) {
+      var response= !err ?
+        body : {"msg":"Error obteniendo usuarios"}
+      res.send(response);
+    }
+  )
+}
+
 function createUser (req, res) {
     console.log("POST /proyectotechu/users");
     console.log(req.body.first_name);
@@ -195,4 +227,6 @@ users.forEach(function(valor,indice){
     module.exports.deleteUserV1=deleteUserV1;*/
 
 module.exports.getUsers=getUsers
+module.exports.getUsersByEmail=getUsersByEmail
+module.exports.getUsersByDni=getUsersByDni
 module.exports.createUser=createUser

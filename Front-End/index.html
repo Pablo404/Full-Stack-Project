@@ -13,9 +13,10 @@
 
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="/bower_components/app-router/app-router.html"/>
+    <link rel="import" href="/src/login-usuario/login-usuario.html">
+    <link rel="import" href="/src/crear-usuario/crear-usuario.html">
 
-    <link rel="import" href="/src/loginUsuario/loginUsuario.html">
-    <link rel="import" href="/src/crearUsuario/crearUsuario.html">
   </head>
   <body>
     <h1>¡Bienvenido a BBVA!</h1>
@@ -28,5 +29,12 @@
     <button type="button" class="btn btn-primary btn-lg">Regístrate</button>
     <login-usuario></login-usuario>
     <crear-usuario></crear-usuario>
+    <app-router>
+      <app-route path="/created/:dni"
+      import="/src/usuario-creado/usuario-creado.html"></app-route>
+      <!-- <app-route path="/prueba" -->
+      <!-- import="/src/prueba-prueba/prueba-prueba.html"></app-route> -->
+    </app-router>
+
   </body>
 </html>
