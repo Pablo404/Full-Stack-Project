@@ -15,7 +15,9 @@
     <input placeholder="Email" type="email" value="{{email::input}}" required><br>
     <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
     <button on-click="login" type="button" class="btn btn-primary">Entrar</button>
-    <button type="button" class="btn btn-secondary">Inicio</button>
+    <a href="/">
+      <button type="button" class="btn btn-secondary">Inicio</button>
+    </a>
     <span hidden$="{{!vacio}}">Debe introducir su email y contraseña</span>
     <span hidden$="{{!error}}">Error. Email y/o contraseña incorrecto/s</span>
 
@@ -88,7 +90,8 @@
 
         this.isLogged=true;
         console.log(this.isLogged);
-        // window.location="user/" + data.detail.response.idUsuario;
+
+        window.location="user/" + data.detail.response.DNI;
       }
 
       showError (error) {

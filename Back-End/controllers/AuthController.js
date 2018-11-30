@@ -23,11 +23,10 @@ function login (req,res){
         res.send({"msg":"Error al iniciar sesión"});
       }else{
         if(body.length>0){
-          var response=body;
-          console.log(response);
-          console.log(response[0].password);
+          console.log(body);
+          console.log(body[0].password);
           console.log(req.body.password);
-          if (crypt.checkpassword(req.body.password,response[0].password)) {
+          if (crypt.checkpassword(req.body.password,body[0].password)) {
             console.log("contraseña correcta");
             var putBody= '{"$set":{"logged":true}}';
             httpClient.put("user?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
@@ -35,7 +34,8 @@ function login (req,res){
                 console.log("Sesión iniciada con éxito");
                 res.status(200);
                 var response ={
-                  "msg":"Sesión iniciada con exito"
+                  "msg":"Sesión iniciada con exito",
+                  "DNI":body[0].DNI
                 }
                 res.send(response);
               }

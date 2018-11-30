@@ -14,24 +14,37 @@
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
     <link rel="import" href="/bower_components/app-router/app-router.html"/>
-    <link rel="import" href="/src/login-usuario/login-usuario.html">
-    <link rel="import" href="/src/crear-usuario/crear-usuario.html">
+    <!-- <link rel="import" href="/src/login-usuario/login-usuario.html"> -->
+    <!-- <link rel="import" href="/src/crear-usuario/crear-usuario.html"> -->
 
   </head>
   <body>
     <h1>¡Bienvenido a BBVA!</h1>
-    <button type="button" class="btn btn-primary btn-lg">Accede a tu área personal</button>
+    <a href="/login">
+      <button type="button" class="btn btn-primary btn-lg">Accede a tu área personal</button>
+    </a>
     <br>
     <br>
     <br>
     <span class="font-weight-light font-italic">¿Aún no estás registrado?</span>
     <br>
-    <button type="button" class="btn btn-primary btn-lg">Regístrate</button>
-    <login-usuario></login-usuario>
-    <crear-usuario></crear-usuario>
+    <a href=/createuser>
+      <button type="button" class="btn btn-primary btn-lg">Regístrate</button>
+    </a>
+    <!-- <login-usuario></login-usuario> -->
+    <!-- <crear-usuario></crear-usuario> -->
     <app-router>
-      <app-route path="/created/:dni"
+      <app-route path="/"></app-route>
+      <app-route path="/createuser"
+      import="/src/crear-usuario/crear-usuario.html"></app-route>
+      <app-route path="/login"
+      import="/src/login-usuario/login-usuario.html"></app-route>
+      <app-route path="/usercreated/:dni"
       import="/src/usuario-creado/usuario-creado.html"></app-route>
+      <app-route path="/user/:dni"
+      import="/src/area-personal/area-personal.html"></app-route>
+      <app-route path="/createaccount/:dni"
+      import="/src/crear-cuenta/crear-cuenta.html"></app-route>
       <!-- <app-route path="/prueba" -->
       <!-- import="/src/prueba-prueba/prueba-prueba.html"></app-route> -->
     </app-router>

@@ -19,7 +19,9 @@
     <input placeholder="Email" type="email" value="{{email::input}}" required><br>
     <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
     <button on-click="createUser" type="button" class="btn btn-primary">Crear</button>
-    <button type="button" class="btn btn-secondary">Inicio</button>
+    <a href="/">
+      <button type="button" class="btn btn-secondary">Inicio</button>
+    </a>
     <span hidden$="{{!error}}">Error. Ya existe un usuario registrado con ese email y/o contraseña</span>
     <span hidden$="{{!vacio}}">Todos los campos son obligatorios</span>
 
@@ -100,7 +102,7 @@
       manageAJAXResponse (data) {
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response);
-        window.location="created/" + this.dni;
+        window.location="usercreated/" + this.dni;
       }
 
       showError (error) {

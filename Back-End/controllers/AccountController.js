@@ -34,7 +34,7 @@ function createAccount (req, res) {
         var newAccount={
           "name":req.body.name,
           "IBAN":response.IBAN,
-          "email":req.body.email,
+          "DNI":req.body.DNI,
           "balance":req.body.balance
         };
 
@@ -114,11 +114,11 @@ function modifyTwoAccounts (req,res) {
   }
 
 
-function getAccountsByUserEmail (req,res) {
-  console.log("GET /proyectotechu/accounts/:email");
+function getAccountsByDni (req,res) {
+  console.log("GET /proyectotechu/accounts/:DNI");
 
-  var email=req.params.email;
-  var query='q={"email":"'+email+'"}';
+  var DNI=req.params.DNI;
+  var query='q={"DNI":"'+DNI+'"}';
 
   var httpClient=requestJson.createClient(mlabBaseURL);
   console.log("Client created");
@@ -178,7 +178,7 @@ users.forEach(function(valor,indice){
 
 
 
-module.exports.getAccountsByUserEmail=getAccountsByUserEmail;
+module.exports.getAccountsByDni=getAccountsByDni;
     //module.exports.getIBAN=getIBAN;
 module.exports.createAccount=createAccount;
 module.exports.modifyAccount=modifyAccount;

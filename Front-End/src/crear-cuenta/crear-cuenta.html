@@ -1,0 +1,124 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="crear-cuenta">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>Crear Cuenta</h2>
+    <br>
+    <input placeholder="Nombre de la cuenta" type="String" value="{{name::input}}" required><br>
+    <input placeholder="Saldo inicial" min="0" type="Number" value="{{balance::input}}" required><span>€</span><br>
+    <button on-click="createAccount" type="button" class="btn btn-primary">Crear</button>
+    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. El saldo no puede ser negativo</span>
+    <span hidden$="{{!creado}}">Cuenta creada con éxito</span>
+    <br>
+    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
+    <br>
+    <br>
+    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
+
+    <iron-ajax auto
+    id="identifyUser"
+    url="http://localhost:3000/proyectotechu/users/{{dni}}"
+    handle-as="json"
+    on-response="showData"
+    />
+
+
+    <iron-ajax
+    id="crearCuenta"
+    url="http://localhost:3000/proyectotechu/accounts"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse"
+    on-error="showError"
+    />
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CrearCuenta extends Polymer.Element {
+      static get is() { return 'crear-cuenta'; }
+      static get properties() {
+        return {
+          name:{
+            type:String
+          }, dni:{
+            type:String
+          }, balance:{
+            type:Number
+          }, vacio:{
+            type:Boolean,
+            value:false
+          }, creado:{
+            type:Boolean,
+            value:false
+          }
+        };
+      }
+
+      showData (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+
+        this.dni=data.detail.response[0].DNI;
+
+      }
+
+      createAccount () {
+        console.log("El usuario ha pulsado el botón");
+        this.vacio=false;
+        this.creado=false;
+
+        if(this.name&&(this.balance>=0)){
+          console.log("Voy a enviar la petición");
+          console.log(this.name);
+          console.log(this.balance);
+          console.log(this.dni);
+
+
+          var accountData= {
+            "name":this.name,
+            "DNI":this.dni,
+            "balance":parseInt(this.balance)
+          };
+          console.log(accountData);
+
+          this.$.crearCuenta.body = JSON.stringify(accountData);
+          this.$.crearCuenta.generateRequest();
+
+          console.log("Petición enviada");
+        }else{
+          console.log("Faltan campos por rellenar o el saldo es negativo");
+          this.vacio=true;
+        }
+      }
+
+
+      manageAJAXResponse (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+        this.creado=true;
+      }
+
+      showError (error) {
+        console.log("Ha habido un error");
+        console.log(error);
+      }
+    }
+
+    window.customElements.define(CrearCuenta.is, CrearCuenta);
+  </script>
+</dom-module>
