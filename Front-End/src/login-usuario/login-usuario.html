@@ -52,9 +52,6 @@
           }, error: {
             type: Boolean,
             value:false
-          },isLogged: {
-            type: Boolean,
-            value:false
           }
         };
       }
@@ -88,17 +85,13 @@
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response);
 
-        this.isLogged=true;
-        console.log(this.isLogged);
-
-        window.location="user/" + data.detail.response.DNI;
+        window.location="/user/" + data.detail.response.DNI;
       }
 
       showError (error) {
         console.log("Ha habido un error");
         console.log(error);
         this.error=true
-        this.isLogged=false;
       }
 
     }

@@ -31,14 +31,23 @@
     on-response="showData"
     />
 
-
     <iron-ajax
     id="crearCuenta"
     url="http://localhost:3000/proyectotechu/accounts"
     handle-as="json"
     content-type="application/json"
     method="POST"
-    on-response="manageAJAXResponse"
+    on-response="manageAJAXResponse1"
+    on-error="showError"
+    />
+
+    <iron-ajax
+    id="doLogout"
+    url="http://localhost:3000/proyectotechu/logout"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse2"
     on-error="showError"
     />
 
@@ -69,12 +78,21 @@
         };
       }
 
-      showData (data) {
+      logout() {
+        var logoutData= {
+          "email": this.email
+        };
+
+        this.$.doLogout.body = JSON.stringify(logoutData);
+        this.$.doLogout.generateRequest();
+
+        console.log("Petición enviada");
+      }
+
+      manageAJAXResponse2 (data) {
         console.log("Llegaron los resultados de la API");
-        console.log(data.detail.response[0]);
-
-        this.dni=data.detail.response[0].DNI;
-
+        console.log(data.detail.response);
+        window.location="/logout"
       }
 
       createAccount () {
@@ -82,7 +100,7 @@
         this.vacio=false;
         this.creado=false;
 
-        if(this.name&&(this.balance>=0)){
+        if(this.name&&((parseInt(this.balance))>=0)){
           console.log("Voy a enviar la petición");
           console.log(this.name);
           console.log(this.balance);
@@ -106,16 +124,27 @@
         }
       }
 
-
-      manageAJAXResponse (data) {
+      manageAJAXResponse1 (data) {
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response);
         this.creado=true;
       }
 
+      showData (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+
+        this.dni=data.detail.response[0].DNI;
+        this.email=data.detail.response[0].email;
+      }
+
       showError (error) {
         console.log("Ha habido un error");
         console.log(error);
+      }
+
+      goToHome() {
+        window.location="/user/"+this.dni
       }
     }
 
