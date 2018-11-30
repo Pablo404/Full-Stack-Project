@@ -43,6 +43,16 @@
     on-response="showData"
     />
 
+    <iron-ajax
+    id="doLogout"
+    url="http://localhost:3000/proyectotechu/logout"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse2"
+    on-error="showError"
+    />
+
   </template>
 
   <script>
@@ -60,34 +70,11 @@
             type: String
           }, dni: {
             type:String
+          }, email: {
+            type:String
           }
         };
       }
-
-      /*login () {
-        console.log("El usuario ha pulsado el botón");
-        this.error=false;
-        this.vacio=false;
-
-        if(this.email&&this.password){usuario-creado
-        console.log("Voy a enviar la petición");
-        console.log(this.email);
-        console.log(this.password);
-
-        var loginData= {
-          "email": this.email,
-          "password" : this.password
-        };
-
-        this.$.doLogin.body = JSON.stringify(loginData);
-        this.$.doLogin.generateRequest();
-
-        console.log("Petición enviada");
-      }else{
-        console.log("Faltan campos por rellenar");
-        this.vacio=true;
-      }
-    }*/
 
       showData (data) {
         console.log("Llegaron los resultados de la API");
@@ -95,12 +82,35 @@
 
         this.first_name=data.detail.response[0].first_name;
         this.last_name=data.detail.response[0].last_name;
+        this.email=data.detail.response[0].email;
       }
 
       goToCrearCuenta() {
         console.log("Vamos a crear una cuenta");
         window.location= "/createaccount/"+this.dni;
       }
+
+      verCuentas() {
+        window.location="/myaccounts/"+this.dni
+      }
+
+      logout() {
+        var logoutData= {
+          "email": this.email
+        };
+
+        this.$.doLogout.body = JSON.stringify(logoutData);
+        this.$.doLogout.generateRequest();
+
+        console.log("Petición enviada");
+      }
+
+      manageAJAXResponse2 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+        window.location="/logout"
+      }
+
     }
 
     window.customElements.define(AreaPersonal.is, AreaPersonal);

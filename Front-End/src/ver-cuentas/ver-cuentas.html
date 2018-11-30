@@ -1,0 +1,109 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html" />
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html" />
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html" />
+
+<dom-module id="ver-cuentas">
+  <template>
+    <style>
+    /** esto es CSS */
+      :host {
+      display: block;
+      }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h1>Tus cuentas</h1>
+    <template is="dom-repeat" items="{{accounts}}">
+      <a href="/myaccount">
+        <h2>{{item.name}}</h2>
+      </a>
+      <h4>{{item.IBAN}}</h4>
+      <h4>{{item.balance}} €</h4>
+      <br>
+      <br>
+    </template>
+    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
+    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
+
+    <iron-ajax auto
+    id="getAccounts"
+    url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
+    handle-as="json"
+    on-response="showDataRepeat"
+    />
+
+    <iron-ajax auto
+    id="identifyUser"
+    url="http://localhost:3000/proyectotechu/users/{{dni}}"
+    handle-as="json"
+    on-response="showData"
+    />
+
+    <iron-ajax
+    id="doLogout"
+    url="http://localhost:3000/proyectotechu/logout"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse2"
+    on-error="showError"
+    />
+
+  </template>
+
+  <script>
+    /** esto es JavaScript
+     * @customElement
+     * @polymer
+     */
+    class VerCuentas extends Polymer.Element {
+      static get is() { return 'ver-cuentas'; }
+      static get properties() {
+        return {
+           dni: {
+            type:String
+          }, email:{
+            type:String
+          }, accounts: {
+            type: Array
+          }
+        };
+      }
+
+      showDataRepeat (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.accounts = data.detail.response;
+      }
+
+      showData (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+        this.email=data.detail.response[0].email;
+      }
+
+      goToHome() {
+        window.location="/user/"+this.dni
+      }
+
+      logout() {
+        var logoutData= {
+          "email": this.email
+        };
+
+        this.$.doLogout.body = JSON.stringify(logoutData);
+        this.$.doLogout.generateRequest();
+
+        console.log("Petición enviada");
+      }
+
+      manageAJAXResponse2 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+        window.location="/logout"
+      }
+    }
+
+    window.customElements.define(VerCuentas.is, VerCuentas);
+  </script>
+</dom-module>
