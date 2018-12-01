@@ -14,11 +14,9 @@
 
     <h1>Tus cuentas</h1>
     <template is="dom-repeat" items="{{accounts}}">
-      <a href="/myaccount">
-        <h2>{{item.name}}</h2>
-      </a>
+      <button on-click="goToAccount" type="button" class="btn btn-link">{{item.name}}</button>
       <h4>{{item.IBAN}}</h4>
-      <h4>{{item.balance}} €</h4>
+      <!-- <h4>{{item.balance}} €</h4> -->
       <br>
       <br>
     </template>
@@ -84,6 +82,10 @@
 
       goToHome() {
         window.location="/user/"+this.dni
+      }
+
+      goToAccount(iban){
+        window.location="/account/"+item.IBAN
       }
 
       logout() {

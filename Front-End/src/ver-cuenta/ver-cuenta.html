@@ -1,0 +1,87 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="ver-cuenta">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>[[name]]</h2>
+    <h2>[[iban]]</h2>
+    <h2>[[balance]]</h2>
+    <br>
+      <button  type="button" class="btn btn-primary">Realizar operación</button>
+      <button  type="button" class="btn btn-primary">Ver operaciones</button>
+      <button  type="button" class="btn btn-primary">Atrás</button>
+      <button  type="button" class="btn btn-primary">Home</button>
+      <button  type="button" class="btn btn-primary">Logout</button>
+
+    <iron-ajax auto
+    id="identifyAccount"
+    url="http://localhost:3000/proyectotechu/account/{{iban}}"
+    handle-as="json"
+    on-response="showData"
+    />
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class VerCuenta extends Polymer.Element {
+      static get is() { return 'ver-cuenta'; }
+      static get properties() {
+        return {
+           name: {
+            type:String
+          }, iban:{
+            type:String
+          }, balance:{
+            type:Number
+          }
+        };
+      }
+
+      /*login () {
+        console.log("El usuario ha pulsado el botón");
+        this.error=false;
+        this.vacio=false;
+
+        if(this.email&&this.password){
+        console.log("Voy a enviar la petición");
+        console.log(this.email);
+        console.log(this.password);
+
+        var loginData= {
+          "email": this.email,
+          "password" : this.password
+        };
+
+        this.$.doLogin.body = JSON.stringify(loginData);
+        this.$.doLogin.generateRequest();
+
+        console.log("Petición enviada");
+      }else{
+        console.log("Faltan campos por rellenar");
+        this.vacio=true;
+      }
+    }*/
+
+      showData (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+
+        this.name=data.detail.response[0].name;
+        this.balance=data.detail.response[0].balance;
+      }
+    }
+
+    window.customElements.define(VerCuenta.is, VerCuenta);
+  </script>
+</dom-module>

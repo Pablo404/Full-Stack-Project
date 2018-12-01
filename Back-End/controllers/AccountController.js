@@ -20,6 +20,7 @@ const mockAPIKey="key="+process.env.MOCK_API_KEY;
     }
   )
 } */
+
 function createAccount (req, res) {
   console.log("POST /proyectotechu/accounts");
 
@@ -146,6 +147,38 @@ function getAccountsByDni (req,res) {
   )
 }
 
+function getAccountByIban (req,res) {
+  console.log("GET /proyectotechu/account/:IBAN");
+
+  var IBAN=req.params.IBAN;
+  var query='q={"IBAN":"'+IBAN+'"}';
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("account?"+query + "&" + mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo cuenta"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Usuario no encontrado"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
 
 
   /* function deleteUserV1(req, res) {
@@ -179,6 +212,7 @@ users.forEach(function(valor,indice){
 
 
 module.exports.getAccountsByDni=getAccountsByDni;
+module.exports.getAccountByIban=getAccountByIban;
     //module.exports.getIBAN=getIBAN;
 module.exports.createAccount=createAccount;
 module.exports.modifyAccount=modifyAccount;
