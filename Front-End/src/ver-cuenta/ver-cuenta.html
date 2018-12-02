@@ -14,17 +14,29 @@
     <h2>[[iban]]</h2>
     <h2>[[balance]]</h2>
     <br>
-      <button  type="button" class="btn btn-primary">Realizar operación</button>
+      <button  type="button" class="btn btn-primary">Realizar un ingreso</button>
+      <button  type="button" class="btn btn-primary">Realizar un reintegro</button>
+      <button  type="button" class="btn btn-primary">Realizar una transferencia</button>
       <button  type="button" class="btn btn-primary">Ver operaciones</button>
-      <button  type="button" class="btn btn-primary">Atrás</button>
-      <button  type="button" class="btn btn-primary">Home</button>
-      <button  type="button" class="btn btn-primary">Logout</button>
+      <button on-click="verCuentas" type="button" class="btn btn-primary">Atrás</button>
+      <button on-click="goToHome" type="button" class="btn btn-primary">Home</button>
+      <button on-click="logout" type="button" class="btn btn-primary">Salir</button>
 
     <iron-ajax auto
     id="identifyAccount"
     url="http://localhost:3000/proyectotechu/account/{{iban}}"
     handle-as="json"
     on-response="showData"
+    />
+
+    <iron-ajax
+    id="doLogout"
+    url="http://localhost:3000/proyectotechu/logout"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse2"
+    on-error="showError"
     />
 
   </template>
@@ -44,34 +56,36 @@
             type:String
           }, balance:{
             type:Number
+          }, dni:{
+            type:String
           }
         };
       }
 
-      /*login () {
-        console.log("El usuario ha pulsado el botón");
-        this.error=false;
-        this.vacio=false;
-
-        if(this.email&&this.password){
-        console.log("Voy a enviar la petición");
-        console.log(this.email);
-        console.log(this.password);
-
-        var loginData= {
-          "email": this.email,
-          "password" : this.password
+      logout() {
+        var logoutData= {
+          "DNI": this.dni
         };
 
-        this.$.doLogin.body = JSON.stringify(loginData);
-        this.$.doLogin.generateRequest();
+        this.$.doLogout.body = JSON.stringify(logoutData);
+        this.$.doLogout.generateRequest();
 
         console.log("Petición enviada");
-      }else{
-        console.log("Faltan campos por rellenar");
-        this.vacio=true;
       }
-    }*/
+
+      manageAJAXResponse2 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+        window.location="/logout"
+      }
+
+      goToHome() {
+        window.location="/user/"+this.dni
+      }
+
+      verCuentas() {
+        window.location="/myaccounts/"+this.dni
+      }
 
       showData (data) {
         console.log("Llegaron los resultados de la API");
@@ -79,6 +93,7 @@
 
         this.name=data.detail.response[0].name;
         this.balance=data.detail.response[0].balance;
+        this.dni=data.detail.response[0].DNI;
       }
     }
 

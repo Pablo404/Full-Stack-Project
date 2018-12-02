@@ -61,7 +61,7 @@ function logout (req,res){
 
   var httpClient=requestJson.createClient(mlabBaseURL);
   console.log("Client created");
-  var query='q={"email":"'+req.body.email+'"}';
+  var query='q={"DNI":"'+req.body.DNI+'"}';
   console.log(query);
 
   httpClient.get("user?"+query+"&"+mlabAPIKey,

@@ -51,6 +51,14 @@
       import="/src/ver-cuentas/ver-cuentas.html"></app-route>
       <app-route path="/account/:iban"
       import="/src/ver-cuenta/ver-cuenta.html"></app-route>
+      <app-route path="/createtransaction/:dni"
+      import="/src/crear-operacion/crear-operacion.html"></app-route>
+      <app-route path="/depositmoney/:dni"
+      import="/src/crear-ingreso/crear-ingreso.html"></app-route>
+      <app-route path="/takemoney/:iban"
+      import="/src/crear-reintegro/crear-reintegro.html"></app-route>
+      <app-route path="/transferrmoney/:iban"
+      import="/src/crear-transferencia/crear-transferencia.html"></app-route>
     </app-router>
 
   </body>

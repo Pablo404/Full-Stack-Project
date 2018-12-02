@@ -24,7 +24,7 @@
     <br>
     <br>
     <!-- <a href="/createtransaction"> -->
-      <button  type="button" class="btn btn-primary">Realizar una operación</button>
+      <button on-click="goToCrearOperacion" type="button" class="btn btn-primary">Realizar una operación</button>
     <!-- </a> -->
     <br>
     <br>
@@ -94,9 +94,13 @@
         window.location="/myaccounts/"+this.dni
       }
 
+      goToCrearOperacion(){
+        window.location="/createtransaction/"+this.dni
+      }
+
       logout() {
         var logoutData= {
-          "email": this.email
+          "DNI": this.dni
         };
 
         this.$.doLogout.body = JSON.stringify(logoutData);
