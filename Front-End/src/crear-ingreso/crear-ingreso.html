@@ -22,7 +22,7 @@
     </template>
     </select>
     <input placeholder="Cantidad" min="0" type="Number" value="{{amount::input}}" required><span>€</span><br>
-    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. El saldo no puede ser negativo</span>
+    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0</span>
     <span hidden$="{{!creado}}">Ingreso registrado correctamente</span>
     <button on-click="depositMoney" type="button" class="btn btn-primary">Confirmar</button>
     <br>
@@ -41,7 +41,7 @@
 
     <iron-ajax
     id="crearIngreso"
-    url="http://localhost:3000/proyectotechu/transactions"
+    url="http://localhost:3000/proyectotechu/transaction"
     handle-as="json"
     content-type="application/json"
     method="POST"
@@ -118,15 +118,15 @@
         this.vacio=false;
         this.creado=false;
 
-        if(this.iban&&(this.amount>=0)){
+        if(this.iban&&(parseInt(this.amount)>0)){
           console.log("Voy a enviar la petición");
           console.log(this.iban);
-          console.log(this.amount);
+          console.log(parseInt(this.amount));
 
           var transactionData= {
             "type":"Deposit Money",
             "IBAN":this.iban,
-            "amount":this.amount
+            "amount":parseInt(this.amount)
           };
           console.log(transactionData);
 

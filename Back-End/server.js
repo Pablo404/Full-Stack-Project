@@ -38,7 +38,7 @@ app.post("/proyectotechu/transactions", transactionController.getTransactions);
 app.post("/proyectotechu/users",userController.createUser);
 app.post("/proyectotechu/accounts",accountController.createAccount);
 app.put("/proyectotechu/accounts",accountController.modifyAccount);
-app.post("/proyectotechu/transactions",transactionController.createTransaction);
+app.post("/proyectotechu/transaction",transactionController.createTransaction);
 app.post("/proyectotechu/login",authController.login);
 app.post("/proyectotechu/logout",authController.logout);
 //app.delete("/apitechu/v1/users/:id", userController.deleteUserV1);

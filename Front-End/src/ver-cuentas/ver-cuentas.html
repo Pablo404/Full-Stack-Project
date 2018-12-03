@@ -14,9 +14,11 @@
 
     <h1>Tus cuentas</h1>
     <template is="dom-repeat" items="{{accounts}}">
-      <button on-click="goToAccount" type="button" class="btn btn-link">{{item.name}}</button>
+      <a href="/account/{{item.IBAN}}">
+        <h3>{{item.name}}</h3>
+      </a>
+      <!-- <button on-click="goToAccount" type="button" class="btn btn-link">{{item.name}}</button> -->
       <h4>{{item.IBAN}}</h4>
-      <!-- <h4>{{item.balance}} €</h4> -->
       <br>
       <br>
     </template>

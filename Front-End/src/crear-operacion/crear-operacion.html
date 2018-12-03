@@ -55,6 +55,14 @@
         window.location="/depositmoney/"+this.dni
       }
 
+      goToTakeMoney(){
+        window.location="/takemoney/"+this.dni
+      }
+
+      goToTransferrMoney(){
+        window.location="/transferrmoney/"+this.dni
+      }
+
       logout() {
         var logoutData= {
           "DNI": this.dni

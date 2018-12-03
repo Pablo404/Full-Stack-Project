@@ -14,9 +14,15 @@
     <h2>[[iban]]</h2>
     <h2>[[balance]]</h2>
     <br>
+    <a href="/depositmoney/{{dni}}">
       <button  type="button" class="btn btn-primary">Realizar un ingreso</button>
+    </a>
+    <a href="/takemoney/{{dni}}">
       <button  type="button" class="btn btn-primary">Realizar un reintegro</button>
+    </a>
+    <a href="/transferrmoney/{{dni}}">
       <button  type="button" class="btn btn-primary">Realizar una transferencia</button>
+    </a>
       <button  type="button" class="btn btn-primary">Ver operaciones</button>
       <button on-click="verCuentas" type="button" class="btn btn-primary">Atrás</button>
       <button on-click="goToHome" type="button" class="btn btn-primary">Home</button>
