@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html" />
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html" />
 
-<dom-module id="ver-cuentas">
+<dom-module id="ver-operaciones">
   <template>
     <style>
     /** esto es CSS */
@@ -12,7 +12,7 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h1>Sus cuentas</h1>
+    <h1>eySus cuentas</h1>
     <template is="dom-repeat" items="{{accounts}}">
       <a href="/account/{{item.IBAN}}">
         <h3>{{item.name}}</h3>
@@ -56,8 +56,8 @@
      * @customElement
      * @polymer
      */
-    class VerCuentas extends Polymer.Element {
-      static get is() { return 'ver-cuentas'; }
+    class VerOperaciones extends Polymer.Element {
+      static get is() { return 'ver-operaciones'; }
       static get properties() {
         return {
            dni: {
@@ -108,6 +108,6 @@
       }
     }
 
-    window.customElements.define(VerCuentas.is, VerCuentas);
+    window.customElements.define(VerOperaciones.is, VerOperaciones);
   </script>
 </dom-module>

@@ -10,8 +10,9 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h2>¡BIENVENIDO [[first_name]] [[last_name]]!</h2>
-    <h4>Ésta es su área personal</h4>
+    <h2>¡BIENVENIDO/A [[first_name]] [[last_name]]!</h2>
+    <h3>Ésta es su área personal</h3>
+    <h4>¿Qué desea hacer?</h4>
     <br>
     <!-- <a href="/createaccount"> -->
       <button on-click="goToCrearCuenta" type="button" class="btn btn-primary">Crear una cuenta</button>
@@ -29,7 +30,7 @@
     <br>
     <br>
     <!-- <a href="/mytransactions"> -->
-      <button  type="button" class="btn btn-primary">Ver mis operaciones</button>
+      <button on-click="verOperaciones" type="button" class="btn btn-primary">Ver mis operaciones</button>
     <!-- </a> -->
     <br>
     <br>
@@ -96,6 +97,10 @@
 
       goToCrearOperacion(){
         window.location="/createtransaction/"+this.dni
+      }
+
+      verOperaciones(){
+        window.location="/mytransactions/"+this.dni
       }
 
       logout() {

@@ -12,18 +12,18 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h2>Crear Ingreso</h2>
+    <h2>Realizar un ingreso</h2>
     <br>
     <br>
     <select value="{{iban::change}}">
-      <option value="">Seleccionar cuenta</option>
+      <option value="">Seleccione una cuenta</option>
     <template is="dom-repeat" items="{{accounts}}">
       <option value="{{item.IBAN}}">{{item.name}}</option>
     </template>
     </select>
     <input placeholder="Cantidad" min="0" type="Number" value="{{amount::input}}" required><span>€</span><br>
-    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0</span>
-    <span hidden$="{{!creado}}">Ingreso registrado correctamente</span>
+    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
+    <span hidden$="{{!creado}}">Ingreso realizado correctamente</span>
     <button on-click="depositMoney" type="button" class="btn btn-primary">Confirmar</button>
     <br>
     <br>

@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
-<dom-module id="ver-cuenta">
+<dom-module id="ver-operaciones-iban">
   <template>
     <style>
       :host {
@@ -10,7 +10,7 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h2>Nombre de cuenta: [[name]]</h2>
+    <h2>eyyyNombre de cuenta: [[name]]</h2>
     <h2>IBAN: [[iban]]</h2>
     <h2>Su saldo es de [[balance]] €</h2>
     <br>
@@ -23,9 +23,7 @@
     <a href="/transferrmoney/{{dni}}">
       <button  type="button" class="btn btn-primary">Realizar una transferencia</button>
     </a>
-    <a href="/transactions/{{iban}}">
       <button  type="button" class="btn btn-primary">Ver operaciones</button>
-    </a>
       <button on-click="verCuentas" type="button" class="btn btn-primary">Atrás</button>
       <button on-click="goToHome" type="button" class="btn btn-primary">Home</button>
       <button on-click="logout" type="button" class="btn btn-primary">Salir</button>
@@ -54,8 +52,8 @@
      * @customElement
      * @polymer
      */
-    class VerCuenta extends Polymer.Element {
-      static get is() { return 'ver-cuenta'; }
+    class VerOperacionesIban extends Polymer.Element {
+      static get is() { return 'ver-operaciones-iban'; }
       static get properties() {
         return {
            name: {
@@ -105,6 +103,6 @@
       }
     }
 
-    window.customElements.define(VerCuenta.is, VerCuenta);
+    window.customElements.define(VerOperacionesIban.is, VerOperacionesIban);
   </script>
 </dom-module>

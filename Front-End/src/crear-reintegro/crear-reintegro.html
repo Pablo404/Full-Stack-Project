@@ -12,18 +12,18 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h2>Crear Reintegro</h2>
+    <h2>Realizar un reintegro</h2>
     <br>
     <br>
     <select value="{{iban::change}}">
-      <option value="">Seleccionar cuenta</option>
+      <option value="">Seleccione una cuenta</option>
     <template is="dom-repeat" items="{{accounts}}">
       <option value="{{item.IBAN}}">{{item.name}}</option>
     </template>
     </select>
     <input placeholder="Cantidad" min="0" type="Number" value="{{amount::input}}" required><span>€</span><br>
-    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0</span>
-    <span hidden$="{{!creado}}">Reintegro registrado correctamente</span>
+    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
+    <span hidden$="{{!creado}}">Reintegro realizado correctamente</span>
     <span hidden$="{{!saldo}}">No hay saldo suficiente en la cuenta</span>
     <button on-click="takeMoney" type="button" class="btn btn-primary">Confirmar</button>
     <br>

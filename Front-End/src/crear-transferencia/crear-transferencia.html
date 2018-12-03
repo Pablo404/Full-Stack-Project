@@ -1,0 +1,203 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html" />
+
+<dom-module id="crear-transferencia">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <h2>Realizar una transferencia</h2>
+    <br>
+    <br>
+    <select value="{{iban2::change}}">
+      <option value="">Seleccione una cuenta origen</option>
+    <template is="dom-repeat" items="{{accounts}}">
+      <option value="{{item.IBAN}}">{{item.name}}</option>
+    </template>
+    </select>
+    <input placeholder="IBAN cuenta destino" type="String" value="{{iban1::input}}" required>
+    <input placeholder="Concepto" type="String" value="{{concept::input}}" required>
+    <input placeholder="Cantidad" min="0" type="Number" value="{{amount::input}}" required><span>€</span><br>
+    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
+    <span hidden$="{{!creado}}">Transferencia realizada correctamente</span>
+    <span hidden$="{{!saldo}}">No hay saldo suficiente en la cuenta origen</span>
+    <button on-click="transferrMoney" type="button" class="btn btn-primary">Confirmar</button>
+    <br>
+    <br>
+    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
+    <br>
+    <br>
+    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
+
+    <iron-ajax auto
+    id="getAccounts"
+    url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
+    handle-as="json"
+    on-response="showDataRepeat"
+    />
+
+    <iron-ajax auto
+    id="getAccount"
+    url="http://localhost:3000/proyectotechu/account/{{iban2}}"
+    handle-as="json"
+    on-response="showData"
+    />
+
+    <iron-ajax
+    id="crearTransferencia"
+    url="http://localhost:3000/proyectotechu/transaction"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse1"
+    on-error="showError"
+    />
+
+    <iron-ajax
+    id="doLogout"
+    url="http://localhost:3000/proyectotechu/logout"
+    handle-as="json"
+    content-type="application/json"
+    method="POST"
+    on-response="manageAJAXResponse2"
+    on-error="showError"
+    />
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CrearTransferencia extends Polymer.Element {
+      static get is() { return 'crear-transferencia'; }
+      static get properties() {
+        return {
+          name:{
+            type:String
+          }, dni:{
+            type:String
+          }, iban1:{
+            type:String
+          }, iban2:{
+            type:String
+          }, concept:{
+            type:String
+          }, amount:{
+            type:Number
+          }, balance:{
+            type:Number
+          }, accounts:{
+            type:Array
+          }, vacio:{
+            type:Boolean,
+            value:false
+          }, creado:{
+            type:Boolean,
+            value:false
+          }, saldo:{
+            type:Boolean,
+            value:false
+        }
+      };
+    }
+
+      showDataRepeat (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.accounts = data.detail.response;
+      }
+
+      showData (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.balance = data.detail.response[0].balance;
+        console.log(this.balance);
+      }
+
+      logout() {
+        var logoutData= {
+          "DNI": this.dni
+        };
+
+        this.$.doLogout.body = JSON.stringify(logoutData);
+        this.$.doLogout.generateRequest();
+
+        console.log("Petición enviada");
+      }
+
+      manageAJAXResponse2 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+        window.location="/logout"
+      }
+
+      transferrMoney () {
+        console.log("El usuario ha pulsado el botón");
+        this.vacio=false;
+        this.creado=false;
+        this.saldo=false;
+
+        if(this.iban1&&this.iban2&&this.concept&&(parseInt(this.amount)>0)&&(this.balance>=this.amount)){
+          console.log("Voy a enviar la petición");
+          console.log(this.iban1);
+          console.log(this.iban2);
+          console.log(this.concept);
+          console.log(parseInt(this.amount));
+          console.log(this.balance);
+
+          var transactionData= {
+            "type":"Transferr Money",
+            "concept":this.concept,
+            "IBAN1":this.iban1,
+            "IBAN2":this.iban2,
+            "amount":parseInt(this.amount)
+          };
+          console.log(transactionData);
+
+          this.$.crearTransferencia.body = JSON.stringify(transactionData);
+          this.$.crearTransferencia.generateRequest();
+
+          console.log("Petición enviada");
+        }else if(this.balance<this.amount){
+          console.log(parseInt(this.amount));
+          console.log(this.balance);
+          console.log("No hay saldo suficiente en la cuenta");
+          this.saldo=true;
+        }else{
+          console.log("Faltan campos por rellenar o el saldo es negativo");
+          this.vacio=true;
+        }
+      }
+
+      manageAJAXResponse1 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response);
+        if(data.detail.response.msg=="Transacción guardada con éxito"){
+        this.creado=true;
+      }else{
+        this.saldo=true;
+      }
+
+      }
+
+      showError (error) {
+        console.log("Ha habido un error");
+        console.log(error);
+      }
+
+      goToHome() {
+        window.location="/user/"+this.dni
+      }
+    }
+
+    window.customElements.define(CrearTransferencia.is, CrearTransferencia);
+  </script>
+</dom-module>
