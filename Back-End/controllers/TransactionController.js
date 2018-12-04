@@ -5,8 +5,38 @@ const mlabAPIKey="apiKey="+process.env.MLAB_API_KEY;
 
 const accountController=require('./AccountController');
 
-function getTransactions (req,res){
-  var query='q={"$or":[{"IBAN":"'+req.body.IBAN+'"},{"IBAN1":"'+req.body.IBAN+'"},{"IBAN2":"'+req.body.IBAN+'"}]}';
+function getTransactionsByIban (req,res){
+  var query='q={"$or":[{"IBAN":"'+req.params.IBAN+'"},{"IBAN1":"'+req.params.IBAN+'"},{"IBAN2":"'+req.params.IBAN+'"}]}';
+  console.log(query);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("transaction?"+query+"&"+mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo movimientos"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Transacciones no encontradas"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
+function getTransactionsByDni (req,res){
+  var query='q={"DNI":"'+req.params.DNI+'"}';
   console.log(query);
 
   var httpClient=requestJson.createClient(mlabBaseURL);
@@ -41,8 +71,10 @@ function createTransaction (req,res){
     var newTransaction={
       "date":date,
       "type":req.body.type,
+      "name":"Ingreso",
       "IBAN":req.body.IBAN,
-      "amount":req.body.amount
+      "amount":req.body.amount,
+      "DNI":req.body.DNI
     };
 
     var httpClient=requestJson.createClient(mlabBaseURL);
@@ -70,8 +102,10 @@ function createTransaction (req,res){
         var newTransaction={
           "date":date,
           "type":req.body.type,
+          "name":"Reintegro",
           "IBAN":req.body.IBAN,
-          "amount":req.body.amount
+          "amount":req.body.amount,
+          "DNI":req.body.DNI
         };
 
           httpClient.post("transaction?"+mlabAPIKey, newTransaction,
@@ -103,10 +137,12 @@ function createTransaction (req,res){
             var newTransaction={
               "date":date,
               "type":req.body.type,
+              "name":"Transferencia",
               "concept":req.body.concept,
               "IBAN1":req.body.IBAN1,
               "IBAN2":req.body.IBAN2,
-              "amount":req.body.amount
+              "amount":req.body.amount,
+              "DNI":req.body.DNI
             };
 
             httpClient.post("transaction?"+mlabAPIKey, newTransaction,
@@ -121,8 +157,7 @@ function createTransaction (req,res){
       }
     )
   }else{
-    res.status(404);
-    res.send({"msg":"El IBAN de destino no está asociado a ninguna cuenta"});
+    res.send({"msg":"El IBAN de destino no está asociado a ninguna cuenta registrada"});
   }
 }
 )
@@ -130,4 +165,5 @@ function createTransaction (req,res){
 }
 
 module.exports.createTransaction=createTransaction;
-module.exports.getTransactions=getTransactions;
+module.exports.getTransactionsByIban=getTransactionsByIban;
+module.exports.getTransactionsByDni=getTransactionsByDni;

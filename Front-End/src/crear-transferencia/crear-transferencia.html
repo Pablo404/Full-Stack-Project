@@ -26,7 +26,8 @@
     <input placeholder="Cantidad" min="0" type="Number" value="{{amount::input}}" required><span>€</span><br>
     <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
     <span hidden$="{{!creado}}">Transferencia realizada correctamente</span>
-    <span hidden$="{{!saldo}}">No hay saldo suficiente en la cuenta origen</span>
+    <span hidden$="{{!nosaldo}}">No hay saldo suficiente en la cuenta origen</span>
+    <span hidden$="{{!noexiste}}">El IBAN de destino no está asociado a ninguna cuenta registrada</span>
     <button on-click="transferrMoney" type="button" class="btn btn-primary">Confirmar</button>
     <br>
     <br>
@@ -102,10 +103,13 @@
           }, creado:{
             type:Boolean,
             value:false
-          }, saldo:{
+          }, nosaldo:{
             type:Boolean,
             value:false
-        }
+        }, noexiste:{
+          type:Boolean,
+          value:false
+      }
       };
     }
 
@@ -143,7 +147,8 @@
         console.log("El usuario ha pulsado el botón");
         this.vacio=false;
         this.creado=false;
-        this.saldo=false;
+        this.nosaldo=false;
+        this.noexiste=false;
 
         if(this.iban1&&this.iban2&&this.concept&&(parseInt(this.amount)>0)&&(this.balance>=this.amount)){
           console.log("Voy a enviar la petición");
@@ -158,7 +163,8 @@
             "concept":this.concept,
             "IBAN1":this.iban1,
             "IBAN2":this.iban2,
-            "amount":parseInt(this.amount)
+            "amount":parseInt(this.amount),
+            "DNI":this.dni
           };
           console.log(transactionData);
 
@@ -170,7 +176,7 @@
           console.log(parseInt(this.amount));
           console.log(this.balance);
           console.log("No hay saldo suficiente en la cuenta");
-          this.saldo=true;
+          this.nosaldo=true;
         }else{
           console.log("Faltan campos por rellenar o el saldo es negativo");
           this.vacio=true;
@@ -182,8 +188,10 @@
         console.log(data.detail.response);
         if(data.detail.response.msg=="Transacción guardada con éxito"){
         this.creado=true;
+      }else if(data.detail.response.msg=="El IBAN de destino no está asociado a ninguna cuenta registrada"){
+        this.noexiste=true;
       }else{
-        this.saldo=true;
+        this.nosaldo=true;
       }
 
       }

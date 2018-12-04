@@ -12,13 +12,15 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h1>eySus cuentas</h1>
-    <template is="dom-repeat" items="{{accounts}}">
-      <a href="/account/{{item.IBAN}}">
-        <h3>{{item.name}}</h3>
+    <h1>Sus operaciones</h1>
+    <template is="dom-repeat" items="{{transactions}}">
+      <a href="/transactions/{{item.IBAN}}">
+        <h3>{{item.IBAN}}</h3>
+        <h3>{{item.IBAN1}}</h3>
       </a>
-      <!-- <button on-click="goToAccount" type="button" class="btn btn-link">{{item.name}}</button> -->
-      <h4>{{item.IBAN}}</h4>
+      <h3>{{item.name}}</h3>
+      <h3>{{item.concept}}</h3>
+      <h3>{{item.amount}}</h3>
       <br>
       <br>
     </template>
@@ -26,8 +28,8 @@
     <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
 
     <iron-ajax auto
-    id="getAccounts"
-    url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
+    id="getTransactions"
+    url="http://localhost:3000/proyectotechu/transactions/{{dni}}"
     handle-as="json"
     on-response="showDataRepeat"
     />
@@ -62,9 +64,11 @@
         return {
            dni: {
             type:String
-          }, email:{
+          }, iban:{
             type:String
-          }, accounts: {
+          }, iban1: {
+           type:String
+         }, transactions: {
             type: Array
           }
         };
@@ -73,22 +77,17 @@
       showDataRepeat (data) {
         console.log("showData");
         console.log(data.detail.response);
-        this.accounts = data.detail.response;
+        this.transactions = data.detail.response;
       }
 
       showData (data) {
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response[0]);
-        this.email=data.detail.response[0].email;
       }
 
       goToHome() {
         window.location="/user/"+this.dni
       }
-
-      // goToAccount(iban){
-        // window.location="/account/"+item.IBAN
-      // }
 
       logout() {
         var logoutData= {
