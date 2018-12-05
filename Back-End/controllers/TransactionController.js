@@ -7,12 +7,13 @@ const accountController=require('./AccountController');
 
 function getTransactionsByIban (req,res){
   var query='q={"$or":[{"IBAN":"'+req.params.IBAN+'"},{"IBAN1":"'+req.params.IBAN+'"},{"IBAN2":"'+req.params.IBAN+'"}]}';
+  var sort='s={"date": -1}'
   console.log(query);
 
   var httpClient=requestJson.createClient(mlabBaseURL);
   console.log("Client created");
 
-  httpClient.get("transaction?"+query+"&"+mlabAPIKey,
+  httpClient.get("transaction?"+query+"&"+sort+"&"+mlabAPIKey,
     function(err,resMlab,body){
       if (err){
         var response={
@@ -37,12 +38,13 @@ function getTransactionsByIban (req,res){
 
 function getTransactionsByDni (req,res){
   var query='q={"DNI":"'+req.params.DNI+'"}';
+  var sort='s={"date": -1}'
   console.log(query);
 
   var httpClient=requestJson.createClient(mlabBaseURL);
   console.log("Client created");
 
-  httpClient.get("transaction?"+query+"&"+mlabAPIKey,
+  httpClient.get("transaction?"+query+"&"+sort+"&"+mlabAPIKey,
     function(err,resMlab,body){
       if (err){
         var response={
@@ -73,8 +75,9 @@ function createTransaction (req,res){
       "type":req.body.type,
       "name":"Ingreso",
       "IBAN":req.body.IBAN,
-      "amount":req.body.amount,
-      "DNI":req.body.DNI
+      "account":req.body.account,
+      "DNI":req.body.DNI,
+      "amount":req.body.amount
     };
 
     var httpClient=requestJson.createClient(mlabBaseURL);
@@ -104,8 +107,9 @@ function createTransaction (req,res){
           "type":req.body.type,
           "name":"Reintegro",
           "IBAN":req.body.IBAN,
-          "amount":req.body.amount,
-          "DNI":req.body.DNI
+          "account":req.body.account,
+          "DNI":req.body.DNI,
+          "amount":req.body.amount
         };
 
           httpClient.post("transaction?"+mlabAPIKey, newTransaction,
@@ -141,8 +145,9 @@ function createTransaction (req,res){
               "concept":req.body.concept,
               "IBAN1":req.body.IBAN1,
               "IBAN2":req.body.IBAN2,
-              "amount":req.body.amount,
-              "DNI":req.body.DNI
+              "account":req.body.account,
+              "DNI":req.body.DNI,
+              "amount":(-1)*req.body.amount
             };
 
             httpClient.post("transaction?"+mlabAPIKey, newTransaction,

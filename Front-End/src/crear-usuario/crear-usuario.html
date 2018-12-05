@@ -87,7 +87,7 @@
             "email": this.email,
             "password" : this.password
           };
-
+          console.log(userData);
           this.$.crearUsuario.body = JSON.stringify(userData);
           this.$.crearUsuario.generateRequest();
 

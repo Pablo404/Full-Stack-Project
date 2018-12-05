@@ -47,6 +47,13 @@
     on-response="showData"
     />
 
+    <iron-ajax auto
+    id="identifyUser"
+    url="http://localhost:3000/proyectotechu/users/{{dni}}"
+    handle-as="json"
+    on-response="showData2"
+    />
+
     <iron-ajax
     id="crearReintegro"
     url="http://localhost:3000/proyectotechu/transaction"
@@ -114,6 +121,14 @@
         console.log(data.detail.response);
         this.balance = data.detail.response[0].balance;
         console.log(this.balance);
+        this.name = data.detail.response[0].name;
+      }
+
+      showData2 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+
+        this.dni=data.detail.response[0].DNI;
       }
 
       logout() {
@@ -148,9 +163,10 @@
           var transactionData= {
             "type":"Take Money",
             "IBAN":this.iban,
-            "amount":parseInt(this.amount),
-            "DNI":this.dni
-          };
+            "account":this.name,
+            "DNI":this.dni,
+            "amount":parseInt(this.amount)
+            };
           console.log(transactionData);
 
           this.$.crearReintegro.body = JSON.stringify(transactionData);

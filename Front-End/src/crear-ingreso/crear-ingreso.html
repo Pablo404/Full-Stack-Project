@@ -39,6 +39,13 @@
     on-response="showDataRepeat"
     />
 
+    <iron-ajax auto
+    id="getAccount"
+    url="http://localhost:3000/proyectotechu/account/{{iban}}"
+    handle-as="json"
+    on-response="showData"
+    />
+
     <iron-ajax
     id="crearIngreso"
     url="http://localhost:3000/proyectotechu/transaction"
@@ -57,6 +64,13 @@
     method="POST"
     on-response="manageAJAXResponse2"
     on-error="showError"
+    />
+
+    <iron-ajax auto
+    id="identifyUser"
+    url="http://localhost:3000/proyectotechu/users/{{dni}}"
+    handle-as="json"
+    on-response="showData2"
     />
 
   </template>
@@ -90,6 +104,19 @@
         };
       }
 
+      showData2 (data) {
+        console.log("Llegaron los resultados de la API");
+        console.log(data.detail.response[0]);
+
+        this.dni=data.detail.response[0].DNI;
+      }
+
+      showData (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.name=data.detail.response[0].name;
+      }
+
       showDataRepeat (data) {
         console.log("showData");
         console.log(data.detail.response);
@@ -100,7 +127,7 @@
         var logoutData= {
           "DNI": this.dni
         };
-
+        console.log(logoutData);
         this.$.doLogout.body = JSON.stringify(logoutData);
         this.$.doLogout.generateRequest();
 
@@ -126,8 +153,9 @@
           var transactionData= {
             "type":"Deposit Money",
             "IBAN":this.iban,
-            "amount":parseInt(this.amount),
-            "DNI":this.dni
+            "account":this.name,
+            "DNI":this.dni,
+            "amount":parseInt(this.amount)
           };
           console.log(transactionData);
 
