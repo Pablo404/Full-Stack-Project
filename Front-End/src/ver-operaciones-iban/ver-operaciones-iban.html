@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html" />
 
 <dom-module id="ver-operaciones-iban">
   <template>
@@ -10,29 +11,45 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <h2>eyyyNombre de cuenta: [[name]]</h2>
+    <h3>Sus operaciones</h3>
+    <h2>Nombre de cuenta: [[name]]</h2>
     <h2>IBAN: [[iban]]</h2>
-    <h2>Su saldo es de [[balance]] €</h2>
+    <h2>Saldo: [[balance]] €</h2>
     <br>
-    <a href="/depositmoney/{{dni}}">
-      <button  type="button" class="btn btn-primary">Realizar un ingreso</button>
-    </a>
-    <a href="/takemoney/{{dni}}">
-      <button  type="button" class="btn btn-primary">Realizar un reintegro</button>
-    </a>
-    <a href="/transferrmoney/{{dni}}">
-      <button  type="button" class="btn btn-primary">Realizar una transferencia</button>
-    </a>
-      <button  type="button" class="btn btn-primary">Ver operaciones</button>
-      <button on-click="verCuentas" type="button" class="btn btn-primary">Atrás</button>
-      <button on-click="goToHome" type="button" class="btn btn-primary">Home</button>
-      <button on-click="logout" type="button" class="btn btn-primary">Salir</button>
+    <span hidden$="{{!notransactions}}">No ha realizado ninguna operación</span>
+    <template is="dom-repeat" items="{{transactions}}">
+      <script type="text/javascript">
+        if({{item.IBAN1}}=={{iban}}){
+          {{item.amount}}=(-1)*{{item.amount}};
+          console.log({{item.IBAN1}}=={{iban}});
+        }
+      </script>
+      <h3>Fecha: {{item.date}}</h3>
+      <h4>Tipo: {{item.name}}</h4>
+      <span hidden$="{{!item.IBAN}}">Cuenta: </span><a href="/account/{{item.IBAN}}"><h3>{{item.IBAN}}</h3></a><span hidden$="{{!item.IBAN}}">({{item.account}})</span>
+      <span hidden$="{{!item.concept}}">Cuenta origen: </span><a href="/account/{{item.IBAN2}}"><h3>{{item.IBAN2}}</h3></a><span hidden$="{{!item.concept}}">({{item.account}})</span>
+      <span hidden$="{{!item.concept}}">Cuenta destino: </span><h3>{{item.IBAN1}}</h3>
+      <span hidden$="{{!item.concept}}">Concepto: </span><h3>{{item.concept}}</h3>
+      <h3>Cantidad: {{item.amount}} €</h3>
+      <br>
+      <br>
+    </template>
+    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
+    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
 
     <iron-ajax auto
     id="identifyAccount"
     url="http://localhost:3000/proyectotechu/account/{{iban}}"
     handle-as="json"
     on-response="showData"
+    />
+
+    <iron-ajax auto
+    id="getTransactionsByIban"
+    url="http://localhost:3000/proyectotechu/transactionsbyiban/{{iban}}"
+    handle-as="json"
+    on-response="showDataRepeat"
+    on-error="showError404"
     />
 
     <iron-ajax
@@ -64,6 +81,11 @@
             type:Number
           }, dni:{
             type:String
+          }, notransactions:{
+            type:Boolean,
+            value:false
+          }, transactions:{
+            type:Array
           }
         };
       }
@@ -89,10 +111,6 @@
         window.location="/user/"+this.dni
       }
 
-      verCuentas() {
-        window.location="/myaccounts/"+this.dni
-      }
-
       showData (data) {
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response[0]);
@@ -100,6 +118,22 @@
         this.name=data.detail.response[0].name;
         this.balance=data.detail.response[0].balance;
         this.dni=data.detail.response[0].DNI;
+      }
+
+      showError(error){
+        console.log(error);
+        console.log("Ha habido un error");
+      }
+
+      showError404(error){
+        console.log(error);
+        this.notransactions=true;
+      }
+
+      showDataRepeat (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.transactions = data.detail.response;
       }
     }
 
