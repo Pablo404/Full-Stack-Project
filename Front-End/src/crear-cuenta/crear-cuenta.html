@@ -10,19 +10,27 @@
 
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <h2>Crear una cuenta</h2>
+    <div class="container text-center">
+      <br>
+    <h1 class="font-weight-bold">Crear una cuenta</h1>
     <br>
+  </div>
+  <form class="text-center">
+    <div class="form-group form-control-lg">
     <input placeholder="Nombre de la cuenta" type="String" value="{{name::input}}" required><br>
+  </div>
+  <div class="form-group form-control-lg">
     <input placeholder="Saldo inicial" min="0" type="Number" value="{{balance::input}}" required><span>€</span><br>
-    <button on-click="createAccount" type="button" class="btn btn-primary">Crear</button>
+  </div>
+    <button on-click="createAccount" type="submit" class="btn btn-lg btn-primary">Crear</button>
+  </form>
     <span hidden$="{{!vacio}}">Todos los campos son obligatorios. El saldo no puede ser negativo</span>
     <span hidden$="{{!creado}}">Cuenta creada con éxito</span>
     <br>
-    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
+    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
     <br>
     <br>
-    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
+    <button on-click="logout" type="button" class="btn btn-lg btn-danger">Salir</button>
 
     <iron-ajax auto
     id="identifyUser"
