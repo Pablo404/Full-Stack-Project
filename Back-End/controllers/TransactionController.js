@@ -6,7 +6,69 @@ const mlabAPIKey="apiKey="+process.env.MLAB_API_KEY;
 const accountController=require('./AccountController');
 
 function getTransactionsByIban (req,res){
-  var query='q={"$or":[{"IBAN":"'+req.params.IBAN+'"},{"IBAN1":"'+req.params.IBAN+'"},{"IBAN2":"'+req.params.IBAN+'"}]}';
+  var query='q={"IBAN":"'+req.params.IBAN+'"}';
+  var sort='s={"date": -1}'
+  console.log(query);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("transaction?"+query+"&"+sort+"&"+mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo movimientos"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Transacciones no encontradas"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
+function getTransactionsByIban1 (req,res){
+  var query='q={"IBAN1":"'+req.params.IBAN+'"}';
+  var sort='s={"date": -1}'
+  console.log(query);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("transaction?"+query+"&"+sort+"&"+mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo movimientos"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Transacciones no encontradas"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
+function getTransactionsByIban2 (req,res){
+  var query='q={"IBAN2":"'+req.params.IBAN+'"}';
   var sort='s={"date": -1}'
   console.log(query);
 
@@ -132,6 +194,7 @@ function createTransaction (req,res){
     httpClient.get("account?"+query1 + "&" + mlabAPIKey,
     function(err,resMlab,body){
       if(body.length>0){
+        var DNI1=body[0].DNI;
         httpClient.get("account?"+query2 + "&" + mlabAPIKey,
         function(err,resMlab,body){
           if(body[0].balance<req.body.amount){
@@ -146,8 +209,9 @@ function createTransaction (req,res){
               "IBAN1":req.body.IBAN1,
               "IBAN2":req.body.IBAN2,
               "account":req.body.account,
-              "DNI":req.body.DNI,
-              "amount":(-1)*req.body.amount
+              "DNI1":DNI1,
+              "DNI2":req.body.DNI,
+              "amount":req.body.amount
             };
 
             httpClient.post("transaction?"+mlabAPIKey, newTransaction,
@@ -172,3 +236,5 @@ function createTransaction (req,res){
 module.exports.createTransaction=createTransaction;
 module.exports.getTransactionsByIban=getTransactionsByIban;
 module.exports.getTransactionsByDni=getTransactionsByDni;
+module.exports.getTransactionsByIban1=getTransactionsByIban1;
+module.exports.getTransactionsByIban2=getTransactionsByIban2;

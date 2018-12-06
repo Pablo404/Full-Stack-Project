@@ -17,8 +17,8 @@
     <template is="dom-repeat" items="{{transactions}}">
       <h3>Fecha: {{item.date}}</h3>
       <h4>Tipo: {{item.name}}</h4>
-      <span hidden$="{{!item.IBAN}}">Cuenta: </span><a href="/account/{{item.IBAN}}"><h3>{{item.IBAN}}</h3></a><span hidden$="{{!item.IBAN}}">({{item.account}})</span>
-      <span hidden$="{{!item.concept}}">Cuenta origen: </span><a href="/account/{{item.IBAN2}}"><h3>{{item.IBAN2}}</h3></a><span hidden$="{{!item.concept}}">({{item.account}})</span>
+      <span hidden$="{{!item.IBAN}}">Cuenta: </span><a href="/transactions/{{item.IBAN}}"><h3>{{item.IBAN}}</h3></a><span hidden$="{{!item.IBAN}}">({{item.account}})</span>
+      <span hidden$="{{!item.concept}}">Cuenta origen: </span><a href="/transactions/{{item.IBAN2}}"><h3>{{item.IBAN2}}</h3></a><span hidden$="{{!item.concept}}">({{item.account}})</span>
       <span hidden$="{{!item.concept}}">Cuenta destino: </span><h3>{{item.IBAN1}}</h3>
       <span hidden$="{{!item.concept}}">Concepto: </span><h3>{{item.concept}}</h3>
       <h3>Cantidad: {{item.amount}} €</h3>

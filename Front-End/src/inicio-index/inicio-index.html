@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="inicio-index">
+  <!-- esta parte es HTML -->
+  <template>
+    <style>
+    /** esto es CSS */
+      :host {
+      display: block;
+      }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <h1>¡BIENVENIDO/A A BBVA!</h1>
+    <a href="/login">
+      <button type="button" class="btn btn-primary btn-lg">Acceda a su área personal</button>
+    </a>
+    <br>
+    <br>
+    <br>
+    <span class="font-weight-light font-italic">¿Aún no está registrado/a?</span>
+    <br>
+    <a href=/createuser>
+      <button type="button" class="btn btn-primary btn-lg">Regístrese</button>
+    </a>
+  </template>
+
+  <script>
+    /** esto es JavaScript
+     * @customElement
+     * @polymer
+     */
+    class InicioIndex extends Polymer.Element {
+      static get is() { return 'inicio-index'; }
+      static get properties() {
+        return {
+
+        };
+      }
+    }
+
+    window.customElements.define(InicioIndex.is, InicioIndex);
+  </script>
+</dom-module>

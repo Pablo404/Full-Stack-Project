@@ -16,20 +16,9 @@
 
   </head>
   <body>
-    <h1>¡BIENVENIDO/A A BBVA!</h1>
-    <a href="/login">
-      <button type="button" class="btn btn-primary btn-lg">Acceda a su área personal</button>
-    </a>
-    <br>
-    <br>
-    <br>
-    <span class="font-weight-light font-italic">¿Aún no está registrado/a?</span>
-    <br>
-    <a href=/createuser>
-      <button type="button" class="btn btn-primary btn-lg">Regístrese</button>
-    </a>
     <app-router>
-      <app-route path="/"></app-route>
+      <app-route path="/"
+      import="/src/inicio-index/inicio-index.html"></app-route>
       <app-route path="/createuser"
       import="/src/crear-usuario/crear-usuario.html"></app-route>
       <app-route path="/login"

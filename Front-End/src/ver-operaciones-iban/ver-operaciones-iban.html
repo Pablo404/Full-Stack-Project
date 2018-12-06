@@ -8,34 +8,86 @@
       :host {
         display: block;
       }
+
+      .bluebg {
+        background-color:blue
+      }
+
+      .redbg {
+        background-color:red
+      }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <h3>Sus operaciones</h3>
-    <h2>Nombre de cuenta: [[name]]</h2>
-    <h2>IBAN: [[iban]]</h2>
-    <h2>Saldo: [[balance]] €</h2>
-    <br>
-    <span hidden$="{{!notransactions}}">No ha realizado ninguna operación</span>
-    <template is="dom-repeat" items="{{transactions}}">
-      <script type="text/javascript">
-        if({{item.IBAN1}}=={{iban}}){
-          {{item.amount}}=(-1)*{{item.amount}};
-          console.log({{item.IBAN1}}=={{iban}});
-        }
-      </script>
-      <h3>Fecha: {{item.date}}</h3>
-      <h4>Tipo: {{item.name}}</h4>
-      <span hidden$="{{!item.IBAN}}">Cuenta: </span><a href="/account/{{item.IBAN}}"><h3>{{item.IBAN}}</h3></a><span hidden$="{{!item.IBAN}}">({{item.account}})</span>
-      <span hidden$="{{!item.concept}}">Cuenta origen: </span><a href="/account/{{item.IBAN2}}"><h3>{{item.IBAN2}}</h3></a><span hidden$="{{!item.concept}}">({{item.account}})</span>
-      <span hidden$="{{!item.concept}}">Cuenta destino: </span><h3>{{item.IBAN1}}</h3>
-      <span hidden$="{{!item.concept}}">Concepto: </span><h3>{{item.concept}}</h3>
-      <h3>Cantidad: {{item.amount}} €</h3>
-      <br>
-      <br>
-    </template>
-    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
-    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
+    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
+    <button on-click="logout" type="button" class="btn btn-lg btn-danger sticky-top">Salir</button>
+    <div class="container text-center">
+      <div class="row border border-primary">
+        <div class="col-12">
+          <h1>Sus operaciones</h1>
+          <h2>Nombre de cuenta: [[name]]</h2>
+          <h3>IBAN: [[iban]]</h3>
+          <h3>Saldo: [[balance]] €</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 border border-success">
+          <h3 class="font-weight-bold font-italic">Ingresos/Reintegros</h3>
+        </div>
+        <div class="col-4 border border-success">
+          <h3 class="font-weight-bold font-italic">Transferencias recibidas</h3>
+        </div>
+        <div class="col-4 border border-success">
+          <h3 class="font-weight-bold font-italic">Transferencias realizadas</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 border border-secondary">
+          <h3 hidden$="{{!notransactions}}">No ha realizado ningún ingreso ni reintegro con esta cuenta</h3>
+          <template is="dom-repeat" items="{{transactions}}">
+            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+              <br>
+              <br>
+              <h6>Fecha:</h6>
+              <h6>{{item.date}}</h6>
+              <h5>Tipo: {{item.name}}</h5>
+              <h4>Cantidad: {{item.amount}} €</h4>
+              <br>
+              <br>
+            </div>
+          </template>
+        </div>
+        <div class="col-4 border border-secondary">
+          <h3 hidden$="{{!notransactions1}}">No ha recibido ninguna transferencia en esta cuenta</h3>
+          <template is="dom-repeat" items="{{transactions1}}">
+            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+              <br>
+              <h6>Fecha:</h6>
+              <h6>{{item.date}}</h6>
+              <h5>Cuenta origen:</h5>
+              <h6>{{item.IBAN2}}</h6>
+              <h5>Concepto: {{item.concept}}</h5>
+              <h4>Cantidad: {{item.amount}} €</h4>
+              <br>
+            </div>
+          </template>
+        </div>
+        <div class="col-4 border border-secondary">
+          <h3 hidden$="{{!notransactions2}}">No ha realizado ninguna transferencia con esta cuenta</h3>
+          <template is="dom-repeat" items="{{transactions2}}">
+            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+              <br>
+              <h6>Fecha:</h6>
+              <h6>{{item.date}}</h6>
+              <h5>Cuenta origen:</h5>
+              <h6>{{item.IBAN1}}</h6>
+              <h5>Concepto: {{item.concept}}</h5>
+              <h4>Cantidad: {{item.amount}} €</h4>
+              <br>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
 
     <iron-ajax auto
     id="identifyAccount"
@@ -50,6 +102,22 @@
     handle-as="json"
     on-response="showDataRepeat"
     on-error="showError404"
+    />
+
+    <iron-ajax auto
+    id="getTransactionsByIban1"
+    url="http://localhost:3000/proyectotechu/transactionsbyiban1/{{iban}}"
+    handle-as="json"
+    on-response="showDataRepeat1"
+    on-error="showError4041"
+    />
+
+    <iron-ajax auto
+    id="getTransactionsByIban2"
+    url="http://localhost:3000/proyectotechu/transactionsbyiban2/{{iban}}"
+    handle-as="json"
+    on-response="showDataRepeat2"
+    on-error="showError4042"
     />
 
     <iron-ajax
@@ -84,7 +152,17 @@
           }, notransactions:{
             type:Boolean,
             value:false
+          }, notransactions1:{
+            type:Boolean,
+            value:false
+          }, notransactions2:{
+            type:Boolean,
+            value:false
           }, transactions:{
+            type:Array
+          }, transactions1:{
+            type:Array
+          }, transactions2:{
             type:Array
           }
         };
@@ -130,10 +208,32 @@
         this.notransactions=true;
       }
 
+      showError4041(error){
+        console.log(error);
+        this.notransactions1=true;
+      }
+
+      showError4042(error){
+        console.log(error);
+        this.notransactions2=true;
+      }
+
       showDataRepeat (data) {
         console.log("showData");
         console.log(data.detail.response);
         this.transactions = data.detail.response;
+      }
+
+      showDataRepeat1 (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.transactions1 = data.detail.response;
+      }
+
+      showDataRepeat2 (data) {
+        console.log("showData");
+        console.log(data.detail.response);
+        this.transactions2 = data.detail.response;
       }
     }
 
