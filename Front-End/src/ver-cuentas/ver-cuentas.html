@@ -7,71 +7,76 @@
     <style>
     /** esto es CSS */
       :host {
-      display: block;
+        display: block;
       }
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
-    <button on-click="logout" type="button" class="btn btn-danger btn-lg sticky-top">Salir</button>
-    <div class="container text-center">
-      <br>
-      <br>
-    <h1 class="font-weight-bold">Sus cuentas</h1>
-    <br>
-  </div>
-  <div class="container text-center border border-secondary">
-    <span hidden$="{{!noaccounts}}">No tiene ninguna cuenta asociada</span>
-    <template is="dom-repeat" items="{{accounts}}">
-      <div class="border border-secondary border-right-0 border-left-0 border-top-0">
-        <br>
-        <br>
-        <h3>{{item.name}}</h3>
-      <a href="/account/{{item.IBAN}}">
-      <h4>{{item.IBAN}}</h4>
-    </a>
-      <br>
-      <br>
-    </div>
+
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
+
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
+        <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
+        <button on-click="logout" type="button" class="btn btn-danger btn-lg sticky-top">Salir</button>
+        <div class="container text-center">
+          <h1 class="font-weight-bold">Sus cuentas</h1>
+          <br>
+        </div>
+        <div class="container text-center border border-secondary">
+          <span hidden$="{{!noaccounts}}">No tiene ninguna cuenta asociada</span>
+          <template is="dom-repeat" items="{{accounts}}">
+            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+              <br>
+              <br>
+              <h3>{{item.name}}</h3>
+              <a href="/account/{{item.IBAN}}">
+                <h4>{{item.IBAN}}</h4>
+              </a>
+              <br>
+              <br>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <iron-ajax auto
+      id="getAccounts"
+      url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
+      handle-as="json"
+      on-response="showDataRepeat"
+      on-error="showError404"
+      />
+
+      <iron-ajax auto
+      id="identifyUser"
+      url="http://localhost:3000/proyectotechu/users/{{dni}}"
+      handle-as="json"
+      on-response="showData"
+      />
+
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
+
     </template>
-  </div>
 
-    <iron-ajax auto
-    id="getAccounts"
-    url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
-    handle-as="json"
-    on-response="showDataRepeat"
-    on-error="showError404"
-    />
-
-    <iron-ajax auto
-    id="identifyUser"
-    url="http://localhost:3000/proyectotechu/users/{{dni}}"
-    handle-as="json"
-    on-response="showData"
-    />
-
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
-
-  </template>
-
-  <script>
+    <script>
     /** esto es JavaScript
-     * @customElement
-     * @polymer
-     */
+    * @customElement
+    * @polymer
+    */
     class VerCuentas extends Polymer.Element {
       static get is() { return 'ver-cuentas'; }
       static get properties() {
         return {
-           dni: {
+          dni: {
             type:String
           }, email:{
             type:String
@@ -109,10 +114,6 @@
         console.log(error);
       }
 
-      // goToAccount(iban){
-        // window.location="/account/"+item.IBAN
-      // }
-
       logout() {
         var logoutData= {
           "DNI": this.dni
@@ -132,5 +133,5 @@
     }
 
     window.customElements.define(VerCuentas.is, VerCuentas);
-  </script>
-</dom-module>
+    </script>
+  </dom-module>

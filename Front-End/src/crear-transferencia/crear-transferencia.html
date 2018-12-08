@@ -9,105 +9,114 @@
         display: block;
       }
 
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <div class="container text-center">
-      <br>
-    <h1 class="font-weight-bold">Realizar una transferencia</h1>
-    <br>
-  </div>
-  <form class="text-center">
-    <div class="form-group form-control-lg">
-      <br>
-    <select value="{{iban2::change}}">
-      <option value="">Seleccione una cuenta origen</option>
-    <template is="dom-repeat" items="{{accounts}}">
-      <option value="{{item.IBAN}}">{{item.name}}</option>
-    </template>
-    </select>
-    <br>
-  </div>
-  <div class="form-group form-control-lg">
-    <br>
-    <input placeholder="IBAN cuenta destino" type="String" value="{{iban1::input}}">
-    <br>
-  </div>
-  <div class="form-group form-control-lg">
-    <br>
-    <input placeholder="Concepto" type="String" value="{{concept::input}}">
-    <br>
-  </div>
-  <div class="form-group form-control-lg">
-    <br>
-    <input placeholder="Cantidad (€)" min="0" type="Number" value="{{amount::input}}">
-    <br>
-    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
-    <span hidden$="{{!creado}}">Transferencia realizada correctamente</span>
-    <span hidden$="{{!nosaldo}}">No hay saldo suficiente en la cuenta origen</span>
-    <span hidden$="{{!noexiste}}">El IBAN de destino no está asociado a ninguna cuenta registrada</span>
-    <br>
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
+
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
+        <div class="container text-center">
+          <br>
+          <h1 class="font-weight-bold">Realizar una transferencia</h1>
+          <br>
+        </div>
+        <form class="text-center">
+          <div class="form-group form-control-lg">
+            <br>
+            <select value="{{iban2::change}}">
+              <option value="">Seleccione una cuenta origen</option>
+              <template is="dom-repeat" items="{{accounts}}">
+                <option value="{{item.IBAN}}">{{item.name}}</option>
+              </template>
+            </select>
+            <br>
+          </div>
+          <div class="form-group form-control-lg">
+            <br>
+            <input placeholder="IBAN cuenta destino" type="String" value="{{iban1::input}}">
+            <br>
+          </div>
+          <div class="form-group form-control-lg">
+            <br>
+            <input placeholder="Concepto" type="String" value="{{concept::input}}">
+            <br>
+          </div>
+          <div class="form-group form-control-lg">
+            <br>
+            <input placeholder="Cantidad (€)" min="0" type="Number" value="{{amount::input}}">
+            <br>
+            <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
+            <span hidden$="{{!creado}}">Transferencia realizada correctamente</span>
+            <span hidden$="{{!nosaldo}}">No hay saldo suficiente en la cuenta origen</span>
+            <span hidden$="{{!noexiste}}">El IBAN de destino no está asociado a ninguna cuenta registrada</span>
+            <br>
+          </div>
+          <br>
+          <br>
+          <button on-click="transferrMoney" type="button" class="btn btn-lg btn-primary">Confirmar</button>
+          <br>
+          <br>
+        </form>
+        <br>
+        <br>
+        <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
+        <br>
+        <br>
+        <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
+        <br>
+        <br>
+        <br>
       </div>
-      <br>
-      <br>
-    <button on-click="transferrMoney" type="button" class="btn btn-lg btn-primary">Confirmar</button>
-    <br>
-    <br>
-  </form>
-  <br>
-  <br>
-    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
-    <br>
-    <br>
-    <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
 
-    <iron-ajax auto
-    id="getAccounts"
-    url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
-    handle-as="json"
-    on-response="showDataRepeat"
-    />
+      <iron-ajax auto
+      id="getAccounts"
+      url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
+      handle-as="json"
+      on-response="showDataRepeat"
+      />
 
-    <iron-ajax auto
-    id="getAccount"
-    url="http://localhost:3000/proyectotechu/account/{{iban2}}"
-    handle-as="json"
-    on-response="showData"
-    />
+      <iron-ajax auto
+      id="getAccount"
+      url="http://localhost:3000/proyectotechu/account/{{iban2}}"
+      handle-as="json"
+      on-response="showData"
+      />
 
-    <iron-ajax auto
-    id="identifyUser"
-    url="http://localhost:3000/proyectotechu/users/{{dni}}"
-    handle-as="json"
-    on-response="showData2"
-    />
+      <iron-ajax auto
+      id="identifyUser"
+      url="http://localhost:3000/proyectotechu/users/{{dni}}"
+      handle-as="json"
+      on-response="showData2"
+      />
 
-    <iron-ajax
-    id="crearTransferencia"
-    url="http://localhost:3000/proyectotechu/transaction"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse1"
-    on-error="showError"
-    />
+      <iron-ajax
+      id="crearTransferencia"
+      url="http://localhost:3000/proyectotechu/transaction"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse1"
+      on-error="showError"
+      />
 
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
 
-  </template>
+    </template>
 
-  <script>
+    <script>
     /**
-     * @customElement
-     * @polymer
-     */
+    * @customElement
+    * @polymer
+    */
     class CrearTransferencia extends Polymer.Element {
       static get is() { return 'crear-transferencia'; }
       static get properties() {
@@ -137,12 +146,12 @@
           }, nosaldo:{
             type:Boolean,
             value:false
-        }, noexiste:{
-          type:Boolean,
-          value:false
+          }, noexiste:{
+            type:Boolean,
+            value:false
+          }
+        };
       }
-      };
-    }
 
       showDataRepeat (data) {
         console.log("showData");
@@ -227,12 +236,12 @@
         console.log("Llegaron los resultados de la API");
         console.log(data.detail.response);
         if(data.detail.response.msg=="Transacción guardada con éxito"){
-        this.creado=true;
-      }else if(data.detail.response.msg=="El IBAN de destino no está asociado a ninguna cuenta registrada"){
-        this.noexiste=true;
-      }else{
-        this.nosaldo=true;
-      }
+          this.creado=true;
+        }else if(data.detail.response.msg=="El IBAN de destino no está asociado a ninguna cuenta registrada"){
+          this.noexiste=true;
+        }else{
+          this.nosaldo=true;
+        }
 
       }
 
@@ -247,5 +256,5 @@
     }
 
     window.customElements.define(CrearTransferencia.is, CrearTransferencia);
-  </script>
-</dom-module>
+    </script>
+  </dom-module>

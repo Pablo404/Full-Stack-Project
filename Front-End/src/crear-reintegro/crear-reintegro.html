@@ -9,94 +9,108 @@
         display: block;
       }
 
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <div class="container text-center">
-      <br>
-    <h1 class="font-weight-bold">Realizar un reintegro</h1>
-    <br>
-  </div>
-  <form class="text-center">
-    <div class="form-group form-control-lg">
-      <br>
-    <select value="{{iban::change}}">
-      <option value="">Seleccione una cuenta</option>
-    <template is="dom-repeat" items="{{accounts}}">
-      <option value="{{item.IBAN}}">{{item.name}}</option>
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
+
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
+        <div class="container text-center">
+          <br>
+          <h1 class="font-weight-bold">Realizar un reintegro</h1>
+          <br>
+        </div>
+        <form class="text-center">
+          <div class="form-group form-control-lg">
+            <br>
+            <select value="{{iban::change}}">
+              <option value="">Seleccione una cuenta</option>
+              <template is="dom-repeat" items="{{accounts}}">
+                <option value="{{item.IBAN}}">{{item.name}}</option>
+              </template>
+            </select>
+            <br>
+          </div>
+          <div class="form-group form-control-lg">
+            <br>
+            <input placeholder="Cantidad (€)" min="0" type="Number" value="{{amount::input}}">
+            <br>
+            <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
+            <span hidden$="{{!creado}}">Reintegro realizado correctamente</span>
+            <span hidden$="{{!nosaldo}}">No hay saldo suficiente en la cuenta</span>
+            <br>
+          </div>
+          <br>
+          <br>
+          <button on-click="takeMoney" type="button" class="btn btn-lg btn-primary">Confirmar</button>
+          <br>
+          <br>
+        </form>
+        <br>
+        <br>
+        <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
+        <br>
+        <br>
+        <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
+
+      <iron-ajax auto
+      id="getAccounts"
+      url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
+      handle-as="json"
+      on-response="showDataRepeat"
+      />
+
+      <iron-ajax auto
+      id="getAccount"
+      url="http://localhost:3000/proyectotechu/account/{{iban}}"
+      handle-as="json"
+      on-response="showData"
+      />
+
+      <iron-ajax auto
+      id="identifyUser"
+      url="http://localhost:3000/proyectotechu/users/{{dni}}"
+      handle-as="json"
+      on-response="showData2"
+      />
+
+      <iron-ajax
+      id="crearReintegro"
+      url="http://localhost:3000/proyectotechu/transaction"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse1"
+      on-error="showError"
+      />
+
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
+
     </template>
-    </select>
-    <br>
-  </div>
-  <div class="form-group form-control-lg">
-    <br>
-    <input placeholder="Cantidad (€)" min="0" type="Number" value="{{amount::input}}">
-    <br>
-    <span hidden$="{{!vacio}}">Todos los campos son obligatorios. La cantidad tiene que ser mayor que 0 €</span>
-    <span hidden$="{{!creado}}">Reintegro realizado correctamente</span>
-    <span hidden$="{{!nosaldo}}">No hay saldo suficiente en la cuenta</span>
-    <br>
-  </div>
-  <br>
-  <br>
-    <button on-click="takeMoney" type="button" class="btn btn-lg btn-primary">Confirmar</button>
-    <br>
-    <br>
-  </form>
-  <br>
-  <br>
-    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
-    <br>
-    <br>
-    <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
 
-    <iron-ajax auto
-    id="getAccounts"
-    url="http://localhost:3000/proyectotechu/accounts/{{dni}}"
-    handle-as="json"
-    on-response="showDataRepeat"
-    />
-
-    <iron-ajax auto
-    id="getAccount"
-    url="http://localhost:3000/proyectotechu/account/{{iban}}"
-    handle-as="json"
-    on-response="showData"
-    />
-
-    <iron-ajax auto
-    id="identifyUser"
-    url="http://localhost:3000/proyectotechu/users/{{dni}}"
-    handle-as="json"
-    on-response="showData2"
-    />
-
-    <iron-ajax
-    id="crearReintegro"
-    url="http://localhost:3000/proyectotechu/transaction"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse1"
-    on-error="showError"
-    />
-
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
-
-  </template>
-
-  <script>
+    <script>
     /**
-     * @customElement
-     * @polymer
-     */
+    * @customElement
+    * @polymer
+    */
     class CrearReintegro extends Polymer.Element {
       static get is() { return 'crear-reintegro'; }
       static get properties() {
@@ -122,9 +136,9 @@
           }, nosaldo:{
             type:Boolean,
             value:false
-        }
-      };
-    }
+          }
+        };
+      }
 
       showDataRepeat (data) {
         console.log("showData");
@@ -183,44 +197,44 @@
             "DNI":this.dni,
             "amount":parseInt(this.amount)
             };
-          console.log(transactionData);
+            console.log(transactionData);
 
-          this.$.crearReintegro.body = JSON.stringify(transactionData);
-          this.$.crearReintegro.generateRequest();
+            this.$.crearReintegro.body = JSON.stringify(transactionData);
+            this.$.crearReintegro.generateRequest();
 
-          console.log("Petición enviada");
-        }else if(this.balance<this.amount){
-          console.log(parseInt(this.amount));
-          console.log(this.balance);
-          console.log("No hay saldo suficiente en la cuenta");
-          this.nosaldo=true;
-        }else{
-          console.log("Faltan campos por rellenar o el saldo es negativo");
-          this.vacio=true;
+            console.log("Petición enviada");
+          }else if(this.balance<this.amount){
+            console.log(parseInt(this.amount));
+            console.log(this.balance);
+            console.log("No hay saldo suficiente en la cuenta");
+            this.nosaldo=true;
+          }else{
+            console.log("Faltan campos por rellenar o el saldo es negativo");
+            this.vacio=true;
+          }
+        }
+
+        manageAJAXResponse1 (data) {
+          console.log("Llegaron los resultados de la API");
+          console.log(data.detail.response);
+          if(data.detail.response.msg=="Transacción guardada con éxito"){
+            this.creado=true;
+          }else{
+            this.nosaldo=true;
+          }
+
+        }
+
+        showError (error) {
+          console.log("Ha habido un error");
+          console.log(error);
+        }
+
+        goToHome() {
+          window.location="/user/"+this.dni
         }
       }
 
-      manageAJAXResponse1 (data) {
-        console.log("Llegaron los resultados de la API");
-        console.log(data.detail.response);
-        if(data.detail.response.msg=="Transacción guardada con éxito"){
-        this.creado=true;
-      }else{
-        this.nosaldo=true;
-      }
-
-      }
-
-      showError (error) {
-        console.log("Ha habido un error");
-        console.log(error);
-      }
-
-      goToHome() {
-        window.location="/user/"+this.dni
-      }
-    }
-
-    window.customElements.define(CrearReintegro.is, CrearReintegro);
-  </script>
-</dom-module>
+      window.customElements.define(CrearReintegro.is, CrearReintegro);
+      </script>
+    </dom-module>

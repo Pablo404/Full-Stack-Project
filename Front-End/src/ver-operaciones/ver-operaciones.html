@@ -7,240 +7,247 @@
     <style>
     /** esto es CSS */
       :host {
-      display: block;
+        display: block;
       }
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
-    <button on-click="logout" type="button" class="btn btn-lg btn-danger sticky-top">Salir</button>
-    <div class="container">
-      <div class="row border border-primary  text-center">
-        <div class="col-12">
-          <br>
-          <br>
-          <h1 class="font-weight-bold">Sus operaciones</h1>
-          <br>
-          <br>
-        </div>
-      </div>
-      <div class="row text-center">
-        <div class="col-4 border border-success">
-          <h3 class="font-weight-bold font-italic">Ingresos/Reintegros</h3>
-        </div>
-        <div class="col-4 border border-success">
-          <h3 class="font-weight-bold font-italic">Transferencias recibidas</h3>
-        </div>
-        <div class="col-4 border border-success">
-          <h3 class="font-weight-bold font-italic">Transferencias realizadas</h3>
-        </div>
-      </div>
-      <div class="row text-center">
-        <div class="col-4 border border-secondary">
-          <h3 hidden$="{{!notransactions}}">No ha realizado ningún ingreso ni reintegro</h3>
-          <template is="dom-repeat" items="{{transactions}}">
-            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
+
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
+        <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
+        <button on-click="logout" type="button" class="btn btn-lg btn-danger sticky-top">Salir</button>
+        <div class="container">
+          <div class="row border border-primary  text-center">
+            <div class="col-12">
               <br>
               <br>
-              <h6><b><i>Fecha:</i></b></h6>
-              <h6>{{item.date}}</h6>
-              <br>
-              <h4><b><i>Tipo:</i></b> {{item.name}}</h4>
-              <br>
-              <h4><b><i>Cuenta:</i></b> {{item.account}}</h4>
-              <a href="/account/{{item.IBAN}}">
-              <h6>{{item.IBAN}}</h6>
-            </a>
-              <br>
-              <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
+              <h1 class="font-weight-bold">Sus operaciones</h1>
               <br>
               <br>
             </div>
-          </template>
-        </div>
-        <div class="col-4 border border-secondary">
-          <h3 hidden$="{{!notransactions1}}">No ha recibido ninguna transferencia</h3>
-          <template is="dom-repeat" items="{{transactions1}}">
-            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
-              <br>
-              <h6><b><i>Fecha:</i></b></h6>
-              <h6>{{item.date}}</h6>
-              <br>
-              <h4><b><i>Cuenta origen:</i></b></h4>
-              <h6>{{item.IBAN2}}</h6>
-              <br>
-              <h4><b><i>Cuenta destino:</i></b></h4>
-              <a href="/account/{{item.IBAN1}}">
-              <h6>{{item.IBAN1}}</h6>
-            </a>
-              <br>
-              <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
-              <br>
-              <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
-              <br>
+          </div>
+          <div class="row text-center">
+            <div class="col-4 border border-success">
+              <h3 class="font-weight-bold font-italic">Ingresos/Reintegros</h3>
             </div>
-          </template>
-        </div>
-        <div class="col-4 border border-secondary">
-          <h3 hidden$="{{!notransactions2}}">No ha realizado ninguna transferencia</h3>
-          <template is="dom-repeat" items="{{transactions2}}">
-            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
-              <br>
-              <h6><b><i>Fecha:</i></b></h6>
-              <h6>{{item.date}}</h6>
-              <br>
-              <h4><b><i>Cuenta origen:</i></b> {{item.account}}</h4>
-              <a href="/account/{{item.IBAN2}}">
-              <h6>{{item.IBAN2}}</h6>
-            </a>
-              <br>
-              <h4><b><i>Cuenta destino:</i></b></h4>
-              <h6>{{item.IBAN1}}</h6>
-              <br>
-              <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
-              <br>
-              <h4><b><i>Cantidad:</i></b> -{{item.amount}} €</h4>
-              <br>
+            <div class="col-4 border border-success">
+              <h3 class="font-weight-bold font-italic">Transferencias recibidas</h3>
             </div>
-          </template>
+            <div class="col-4 border border-success">
+              <h3 class="font-weight-bold font-italic">Transferencias realizadas</h3>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-4 border border-secondary">
+              <h3 hidden$="{{!notransactions}}">No ha realizado ningún ingreso ni reintegro</h3>
+              <template is="dom-repeat" items="{{transactions}}">
+                <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+                  <br>
+                  <br>
+                  <h6><b><i>Fecha:</i></b></h6>
+                  <h6>{{item.date}}</h6>
+                  <br>
+                  <h4><b><i>Tipo:</i></b> {{item.name}}</h4>
+                  <br>
+                  <h4><b><i>Cuenta:</i></b> {{item.account}}</h4>
+                  <a href="/account/{{item.IBAN}}">
+                    <h6>{{item.IBAN}}</h6>
+                  </a>
+                  <br>
+                  <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
+                  <br>
+                  <br>
+                </div>
+              </template>
+            </div>
+            <div class="col-4 border border-secondary">
+              <h3 hidden$="{{!notransactions1}}">No ha recibido ninguna transferencia</h3>
+              <template is="dom-repeat" items="{{transactions1}}">
+                <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+                  <br>
+                  <h6><b><i>Fecha:</i></b></h6>
+                  <h6>{{item.date}}</h6>
+                  <br>
+                  <h4><b><i>Cuenta origen:</i></b></h4>
+                  <h6>{{item.IBAN2}}</h6>
+                  <br>
+                  <h4><b><i>Cuenta destino:</i></b></h4>
+                  <a href="/account/{{item.IBAN1}}">
+                    <h6>{{item.IBAN1}}</h6>
+                  </a>
+                  <br>
+                  <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
+                  <br>
+                  <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
+                  <br>
+                </div>
+              </template>
+            </div>
+            <div class="col-4 border border-secondary">
+              <h3 hidden$="{{!notransactions2}}">No ha realizado ninguna transferencia</h3>
+              <template is="dom-repeat" items="{{transactions2}}">
+                <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+                  <br>
+                  <h6><b><i>Fecha:</i></b></h6>
+                  <h6>{{item.date}}</h6>
+                  <br>
+                  <h4><b><i>Cuenta origen:</i></b> {{item.account}}</h4>
+                  <a href="/account/{{item.IBAN2}}">
+                    <h6>{{item.IBAN2}}</h6>
+                  </a>
+                  <br>
+                  <h4><b><i>Cuenta destino:</i></b></h4>
+                  <h6>{{item.IBAN1}}</h6>
+                  <br>
+                  <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
+                  <br>
+                  <h4><b><i>Cantidad:</i></b> -{{item.amount}} €</h4>
+                  <br>
+                </div>
+              </template>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <iron-ajax auto
-    id="getTransactions"
-    url="http://localhost:3000/proyectotechu/transactions/{{dni}}"
-    handle-as="json"
-    on-response="showDataRepeat"
-    on-error="showError404"
-    />
+      <iron-ajax auto
+      id="getTransactions"
+      url="http://localhost:3000/proyectotechu/transactions/{{dni}}"
+      handle-as="json"
+      on-response="showDataRepeat"
+      on-error="showError404"
+      />
 
-    <iron-ajax auto
-    id="getTransactions1"
-    url="http://localhost:3000/proyectotechu/transactionsbydni1/{{dni}}"
-    handle-as="json"
-    on-response="showDataRepeat1"
-    on-error="showError4041"
-    />
+      <iron-ajax auto
+      id="getTransactions1"
+      url="http://localhost:3000/proyectotechu/transactionsbydni1/{{dni}}"
+      handle-as="json"
+      on-response="showDataRepeat1"
+      on-error="showError4041"
+      />
 
-    <iron-ajax auto
-    id="getTransactions2"
-    url="http://localhost:3000/proyectotechu/transactionsbydni2/{{dni}}"
-    handle-as="json"
-    on-response="showDataRepeat2"
-    on-error="showError4042"
-    />
+      <iron-ajax auto
+      id="getTransactions2"
+      url="http://localhost:3000/proyectotechu/transactionsbydni2/{{dni}}"
+      handle-as="json"
+      on-response="showDataRepeat2"
+      on-error="showError4042"
+      />
 
-    <iron-ajax auto
-    id="identifyUser"
-    url="http://localhost:3000/proyectotechu/users/{{dni}}"
-    handle-as="json"
-    on-response="showData"
-    />
+      <iron-ajax auto
+      id="identifyUser"
+      url="http://localhost:3000/proyectotechu/users/{{dni}}"
+      handle-as="json"
+      on-response="showData"
+      />
 
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
 
-  </template>
+    </template>
 
-  <script>
-    /** esto es JavaScript
-     * @customElement
-     * @polymer
-     */
+    <script>
+    /**
+    * @customElement
+    * @polymer
+    */
     class VerOperaciones extends Polymer.Element {
       static get is() { return 'ver-operaciones'; }
       static get properties() {
         return {
-           dni: {
+          dni: {
             type:String
           }, notransactions:{
-           type:Boolean,
-           value:false
-         },notransactions1:{
-          type:Boolean,
-          value:false
-        },notransactions2:{
-         type:Boolean,
-         value:false
-       }, transactions: {
+            type:Boolean,
+            value:false
+          },notransactions1:{
+            type:Boolean,
+            value:false
+          },notransactions2:{
+            type:Boolean,
+            value:false
+          }, transactions: {
             type: Array
           },transactions1: {
-             type: Array
-           },transactions2: {
+            type: Array
+          },transactions2: {
               type: Array
             }
 
-        };
+          };
+        }
+
+        showError404(error){
+          console.log(error);
+          this.notransactions=true;
+        }
+
+        showDataRepeat (data) {
+          console.log("showData");
+          console.log(data.detail.response);
+          this.transactions = data.detail.response;
+        }
+
+        showError4041(error){
+          console.log(error);
+          this.notransactions1=true;
+        }
+
+        showDataRepeat1 (data) {
+          console.log("showData");
+          console.log(data.detail.response);
+          this.transactions1 = data.detail.response;
+        }
+
+        showError4042(error){
+          console.log(error);
+          this.notransactions2=true;
+        }
+
+        showDataRepeat2 (data) {
+          console.log("showData");
+          console.log(data.detail.response);
+          this.transactions2 = data.detail.response;
+        }
+
+        showData (data) {
+          console.log("Llegaron los resultados de la API");
+          console.log(data.detail.response[0]);
+          this.dni=data.detail.response[0].DNI;
+        }
+
+        goToHome() {
+          window.location="/user/"+this.dni
+        }
+
+        logout() {
+          var logoutData= {
+            "DNI": this.dni
+          };
+
+          this.$.doLogout.body = JSON.stringify(logoutData);
+          this.$.doLogout.generateRequest();
+
+          console.log("Petición enviada");
+        }
+
+        manageAJAXResponse2 (data) {
+          console.log("Llegaron los resultados de la API");
+          console.log(data.detail.response);
+          window.location="/logout"
+        }
       }
 
-      showError404(error){
-        console.log(error);
-        this.notransactions=true;
-      }
-
-      showDataRepeat (data) {
-        console.log("showData");
-        console.log(data.detail.response);
-        this.transactions = data.detail.response;
-      }
-
-      showError4041(error){
-        console.log(error);
-        this.notransactions1=true;
-      }
-
-      showDataRepeat1 (data) {
-        console.log("showData");
-        console.log(data.detail.response);
-        this.transactions1 = data.detail.response;
-      }
-
-      showError4042(error){
-        console.log(error);
-        this.notransactions2=true;
-      }
-
-      showDataRepeat2 (data) {
-        console.log("showData");
-        console.log(data.detail.response);
-        this.transactions2 = data.detail.response;
-      }
-
-      showData (data) {
-        console.log("Llegaron los resultados de la API");
-        console.log(data.detail.response[0]);
-        this.dni=data.detail.response[0].DNI;
-      }
-
-      goToHome() {
-        window.location="/user/"+this.dni
-      }
-
-      logout() {
-        var logoutData= {
-          "DNI": this.dni
-        };
-
-        this.$.doLogout.body = JSON.stringify(logoutData);
-        this.$.doLogout.generateRequest();
-
-        console.log("Petición enviada");
-      }
-
-      manageAJAXResponse2 (data) {
-        console.log("Llegaron los resultados de la API");
-        console.log(data.detail.response);
-        window.location="/logout"
-      }
-    }
-
-    window.customElements.define(VerOperaciones.is, VerOperaciones);
-  </script>
-</dom-module>
+      window.customElements.define(VerOperaciones.is, VerOperaciones);
+      </script>
+    </dom-module>

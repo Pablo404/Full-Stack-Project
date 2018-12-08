@@ -9,138 +9,144 @@
         display: block;
       }
 
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
-    <button on-click="logout" type="button" class="btn btn-lg btn-danger sticky-top">Salir</button>
-    <div class="container">
-      <div class="row border border-primary  text-center">
-        <div class="col-12">
-          <h1 class="font-weight-bold">Sus operaciones</h1>
-          <h2 class="font-weight-bold">Nombre de cuenta: [[name]]</h2>
-          <h3 class="font-weight-bold">IBAN: [[iban]]</h3>
-          <h3 class="font-weight-bold">Saldo: [[balance]] €</h3>
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
+
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
+        <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
+        <button on-click="logout" type="button" class="btn btn-lg btn-danger sticky-top">Salir</button>
+        <div class="container">
+          <div class="row border border-primary  text-center">
+            <div class="col-12">
+              <h1 class="font-weight-bold">Sus operaciones</h1>
+              <h2 class="font-weight-bold">Nombre de cuenta: [[name]]</h2>
+              <h3 class="font-weight-bold">IBAN: [[iban]]</h3>
+              <h3 class="font-weight-bold">Saldo: [[balance]] €</h3>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-4 border border-success">
+              <h3 class="font-weight-bold font-italic">Ingresos/Reintegros</h3>
+            </div>
+            <div class="col-4 border border-success">
+              <h3 class="font-weight-bold font-italic">Transferencias recibidas</h3>
+            </div>
+            <div class="col-4 border border-success">
+              <h3 class="font-weight-bold font-italic">Transferencias realizadas</h3>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-4 border border-secondary">
+              <h3 hidden$="{{!notransactions}}">No ha realizado ningún ingreso ni reintegro con esta cuenta</h3>
+              <template is="dom-repeat" items="{{transactions}}">
+                <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+                  <br>
+                  <h6><b><i>Fecha:</i></b></h6>
+                  <h6>{{item.date}}</h6>
+                  <br>
+                  <h4><b><i>Tipo:</i></b> {{item.name}}</h4>
+                  <br>
+                  <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
+                  <br>
+                </div>
+              </template>
+            </div>
+            <div class="col-4 border border-secondary">
+              <h3 hidden$="{{!notransactions1}}">No ha recibido ninguna transferencia en esta cuenta</h3>
+              <template is="dom-repeat" items="{{transactions1}}">
+                <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+                  <br>
+                  <h6><b><i>Fecha:</i></b></h6>
+                  <h6>{{item.date}}</h6>
+                  <br>
+                  <h6><b><i>Cuenta origen:</i></b></h6>
+                  <h6>{{item.IBAN2}}</h6>
+                  <br>
+                  <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
+                  <br>
+                  <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
+                  <br>
+                </div>
+              </template>
+            </div>
+            <div class="col-4 border border-secondary">
+              <h3 hidden$="{{!notransactions2}}">No ha realizado ninguna transferencia con esta cuenta</h3>
+              <template is="dom-repeat" items="{{transactions2}}">
+                <div class="border border-secondary border-right-0 border-left-0 border-top-0">
+                  <br>
+                  <h6><b><i>Fecha:</i></b></h6>
+                  <h6>{{item.date}}</h6>
+                  <br>
+                  <h6><b><i>Cuenta destino:</i></b></h6>
+                  <h6>{{item.IBAN1}}</h6>
+                  <br>
+                  <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
+                  <br>
+                  <h4><b><i>Cantidad:</i></b> -{{item.amount}} €</h4>
+                  <br>
+                </div>
+              </template>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row text-center">
-        <div class="col-4 border border-success">
-          <h3 class="font-weight-bold font-italic">Ingresos/Reintegros</h3>
-        </div>
-        <div class="col-4 border border-success">
-          <h3 class="font-weight-bold font-italic">Transferencias recibidas</h3>
-        </div>
-        <div class="col-4 border border-success">
-          <h3 class="font-weight-bold font-italic">Transferencias realizadas</h3>
-        </div>
-      </div>
-      <div class="row text-center">
-        <div class="col-4 border border-secondary">
-          <h3 hidden$="{{!notransactions}}">No ha realizado ningún ingreso ni reintegro con esta cuenta</h3>
-          <template is="dom-repeat" items="{{transactions}}">
-            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
-              <br>
-              <h6><b><i>Fecha:</i></b></h6>
-              <h6>{{item.date}}</h6>
-              <br>
-              <h4><b><i>Tipo:</i></b> {{item.name}}</h4>
-              <br>
-              <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
-              <br>
-            </div>
-          </template>
-        </div>
-        <div class="col-4 border border-secondary">
-          <h3 hidden$="{{!notransactions1}}">No ha recibido ninguna transferencia en esta cuenta</h3>
-          <template is="dom-repeat" items="{{transactions1}}">
-            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
-              <br>
-              <h6><b><i>Fecha:</i></b></h6>
-              <h6>{{item.date}}</h6>
-              <br>
-              <h6><b><i>Cuenta origen:</i></b></h6>
-              <h6>{{item.IBAN2}}</h6>
-              <br>
-              <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
-              <br>
-              <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
-              <br>
-            </div>
-          </template>
-        </div>
-        <div class="col-4 border border-secondary">
-          <h3 hidden$="{{!notransactions2}}">No ha realizado ninguna transferencia con esta cuenta</h3>
-          <template is="dom-repeat" items="{{transactions2}}">
-            <div class="border border-secondary border-right-0 border-left-0 border-top-0">
-              <br>
-              <h6><b><i>Fecha:</i></b></h6>
-              <h6>{{item.date}}</h6>
-              <br>
-              <h6><b><i>Cuenta destino:</i></b></h6>
-              <h6>{{item.IBAN1}}</h6>
-              <br>
-              <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
-              <br>
-              <h4><b><i>Cantidad:</i></b> -{{item.amount}} €</h4>
-              <br>
-            </div>
-          </template>
-        </div>
-      </div>
-    </div>
 
-    <iron-ajax auto
-    id="identifyAccount"
-    url="http://localhost:3000/proyectotechu/account/{{iban}}"
-    handle-as="json"
-    on-response="showData"
-    />
+      <iron-ajax auto
+      id="identifyAccount"
+      url="http://localhost:3000/proyectotechu/account/{{iban}}"
+      handle-as="json"
+      on-response="showData"
+      />
 
-    <iron-ajax auto
-    id="getTransactionsByIban"
-    url="http://localhost:3000/proyectotechu/transactionsbyiban/{{iban}}"
-    handle-as="json"
-    on-response="showDataRepeat"
-    on-error="showError404"
-    />
+      <iron-ajax auto
+      id="getTransactionsByIban"
+      url="http://localhost:3000/proyectotechu/transactionsbyiban/{{iban}}"
+      handle-as="json"
+      on-response="showDataRepeat"
+      on-error="showError404"
+      />
 
-    <iron-ajax auto
-    id="getTransactionsByIban1"
-    url="http://localhost:3000/proyectotechu/transactionsbyiban1/{{iban}}"
-    handle-as="json"
-    on-response="showDataRepeat1"
-    on-error="showError4041"
-    />
+      <iron-ajax auto
+      id="getTransactionsByIban1"
+      url="http://localhost:3000/proyectotechu/transactionsbyiban1/{{iban}}"
+      handle-as="json"
+      on-response="showDataRepeat1"
+      on-error="showError4041"
+      />
 
-    <iron-ajax auto
-    id="getTransactionsByIban2"
-    url="http://localhost:3000/proyectotechu/transactionsbyiban2/{{iban}}"
-    handle-as="json"
-    on-response="showDataRepeat2"
-    on-error="showError4042"
-    />
+      <iron-ajax auto
+      id="getTransactionsByIban2"
+      url="http://localhost:3000/proyectotechu/transactionsbyiban2/{{iban}}"
+      handle-as="json"
+      on-response="showDataRepeat2"
+      on-error="showError4042"
+      />
 
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
 
-  </template>
+    </template>
 
-  <script>
+    <script>
     /**
-     * @customElement
-     * @polymer
-     */
+    * @customElement
+    * @polymer
+    */
     class VerOperacionesIban extends Polymer.Element {
       static get is() { return 'ver-operaciones-iban'; }
       static get properties() {
         return {
-           name: {
+          name: {
             type:String
           }, iban:{
             type:String
@@ -237,5 +243,5 @@
     }
 
     window.customElements.define(VerOperacionesIban.is, VerOperacionesIban);
-  </script>
-</dom-module>
+    </script>
+  </dom-module>

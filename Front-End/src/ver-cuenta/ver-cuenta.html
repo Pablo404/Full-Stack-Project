@@ -7,103 +7,115 @@
       :host {
         display: block;
       }
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<br>
-<br>
-    <div class="container border border-warning text-center">
-      <br>
-      <br>
-      <br>
-    <h1 class="font-weight-bold">Nombre de cuenta: [[name]]</h1>
-    <h1>IBAN: [[iban]]</h1>
-    <h1>Su saldo es de [[balance]] €</h1>
-    <br>
-  <br>
-  </div>
-  <br>
-  <br>
-  <div class="container">
-  <div class="row">
-    <div class="col-4 text-right">
-      <br>
-    <a href="/depositmoney/{{dni}}">
-      <button  type="button" class="btn btn-lg btn-primary">Realizar un ingreso</button>
-    </a>
-    <br>
-  </div>
-  <div class="col-4 text-center">
-    <br>
-    <a href="/transferrmoney/{{dni}}">
-      <button  type="button" class="btn btn-lg btn-primary">Realizar una transferencia</button>
-    </a>
-    <br>
-  </div>
-  <div class="col-4 text-left">
-    <br>
-    <a href="/takemoney/{{dni}}">
-      <button  type="button" class="btn btn-lg btn-primary">Realizar un reintegro</button>
-    </a>
-    <br>
-  </div>
-    </div>
-    <div class="row">
-      <div class="col-6 text-right">
+
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
+
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
         <br>
-    <a href="/transactions/{{iban}}">
-      <button  type="button" class="btn btn-lg btn-primary">Ver operaciones</button>
-    </a>
-    <br>
+        <br>
+        <div class="container border border-warning text-center">
+          <br>
+          <br>
+          <br>
+          <h1 class="font-weight-bold">Nombre de cuenta: [[name]]</h1>
+          <h1>IBAN: [[iban]]</h1>
+          <h1>Su saldo es de [[balance]] €</h1>
+          <br>
+          <br>
         </div>
-    <div class="col-6 text-left">
-      <br>
-      <button on-click="verCuentas" type="button" class="btn btn-lg btn-primary">Mis cuentas</button>
-      <br>
-  </div>
-</div>
-    <div class="row">
-      <div class="col-6 text-right">
-      <br>
-      <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
-      <br>
-    </div>
-    <div class="col-6 text-left">
-      <br>
-      <button on-click="logout" type="button" class="btn btn-lg btn-danger">Salir</button>
-      <br>
+        <br>
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="col-4 text-right">
+              <br>
+              <a href="/depositmoney/{{dni}}">
+                <button  type="button" class="btn btn-lg btn-primary">Realizar un ingreso</button>
+              </a>
+              <br>
+            </div>
+            <div class="col-4 text-center">
+              <br>
+              <a href="/transferrmoney/{{dni}}">
+                <button  type="button" class="btn btn-lg btn-primary">Realizar una transferencia</button>
+              </a>
+              <br>
+            </div>
+            <div class="col-4 text-left">
+              <br>
+              <a href="/takemoney/{{dni}}">
+                <button  type="button" class="btn btn-lg btn-primary">Realizar un reintegro</button>
+              </a>
+              <br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 text-right">
+              <br>
+              <a href="/transactions/{{iban}}">
+                <button  type="button" class="btn btn-lg btn-primary">Ver operaciones</button>
+              </a>
+              <br>
+            </div>
+            <div class="col-6 text-left">
+              <br>
+              <button on-click="verCuentas" type="button" class="btn btn-lg btn-primary">Mis cuentas</button>
+              <br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 text-right">
+              <br>
+              <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
+              <br>
+            </div>
+            <div class="col-6 text-left">
+              <br>
+              <button on-click="logout" type="button" class="btn btn-lg btn-danger">Salir</button>
+              <br>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
       </div>
-    </div>
-</div>
 
-    <iron-ajax auto
-    id="identifyAccount"
-    url="http://localhost:3000/proyectotechu/account/{{iban}}"
-    handle-as="json"
-    on-response="showData"
-    />
+      <iron-ajax auto
+      id="identifyAccount"
+      url="http://localhost:3000/proyectotechu/account/{{iban}}"
+      handle-as="json"
+      on-response="showData"
+      />
 
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
 
-  </template>
+    </template>
 
-  <script>
+    <script>
     /**
-     * @customElement
-     * @polymer
-     */
+    * @customElement
+    * @polymer
+    */
     class VerCuenta extends Polymer.Element {
       static get is() { return 'ver-cuenta'; }
       static get properties() {
         return {
-           name: {
+          name: {
             type:String
           }, iban:{
             type:String
@@ -151,5 +163,5 @@
     }
 
     window.customElements.define(VerCuenta.is, VerCuenta);
-  </script>
-</dom-module>
+    </script>
+  </dom-module>

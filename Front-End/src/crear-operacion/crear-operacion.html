@@ -8,53 +8,72 @@
         display: block;
       }
 
-    </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <div class="container text-center">
-      <br>
-      <br>
-    <h1 class="font-weight-bold">Realizar una operación</h1>
-    <br>
-    <br>
-    <h2>Elija el tipo de operación que desea realizar</h2>
-    <br>
-    <br>
-    </div>
-    <div class="row">
-      <div class="col-4 text-right">
-    <button on-click="goToDepositMoney" type="button" class="btn btn-lg btn-primary">Ingreso</button>
-  </div>
-  <div class="col-4 text-center">
-    <button on-click="goToTransferrMoney" type="button" class="btn btn-lg btn-primary">Transferencia</button>
-  </div>
-  <div class="col-4 text-left">
-    <button on-click="goToTakeMoney" type="button" class="btn btn-lg btn-primary">Reintegro</button>
-  </div>
-    <br>
-    <br>
-  </div>
-  <br>
-  <br>
-    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
-    <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
+      .fondo {
+        background-image: url("../../Bbva2.jpg");
+      }
 
-    <iron-ajax
-    id="doLogout"
-    url="http://localhost:3000/proyectotechu/logout"
-    handle-as="json"
-    content-type="application/json"
-    method="POST"
-    on-response="manageAJAXResponse2"
-    on-error="showError"
-    />
+      </style>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <div class="fondo">
+        <div class="container text-center">
+          <br>
+          <br>
+          <h1 class="font-weight-bold">Realizar una operación</h1>
+          <br>
+          <br>
+          <h2>Elija el tipo de operación que desea realizar</h2>
+          <br>
+          <br>
+        </div>
+        <div class="row">
+          <div class="col-4 text-right">
+            <button on-click="goToDepositMoney" type="button" class="btn btn-lg btn-primary">Ingreso</button>
+          </div>
+          <div class="col-4 text-center">
+            <button on-click="goToTransferrMoney" type="button" class="btn btn-lg btn-primary">Transferencia</button>
+          </div>
+          <div class="col-4 text-left">
+            <button on-click="goToTakeMoney" type="button" class="btn btn-lg btn-primary">Reintegro</button>
+          </div>
+          <br>
+          <br>
+        </div>
+        <br>
+        <br>
+        <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
+        <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
 
-  </template>
+      <iron-ajax
+      id="doLogout"
+      url="http://localhost:3000/proyectotechu/logout"
+      handle-as="json"
+      content-type="application/json"
+      method="POST"
+      on-response="manageAJAXResponse2"
+      on-error="showError"
+      />
 
-  <script>
+    </template>
+
+    <script>
     /**
-     * @customElement
-     * @polymer
-     */
+    * @customElement
+    * @polymer
+    */
     class CrearOperacion extends Polymer.Element {
       static get is() { return 'crear-operacion'; }
       static get properties() {
@@ -94,7 +113,6 @@
         window.location="/logout"
       }
 
-
       showError (error) {
         console.log("Ha habido un error");
         console.log(error);
@@ -106,5 +124,5 @@
     }
 
     window.customElements.define(CrearOperacion.is, CrearOperacion);
-  </script>
-</dom-module>
+    </script>
+  </dom-module>
