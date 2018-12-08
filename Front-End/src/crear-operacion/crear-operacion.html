@@ -10,19 +10,33 @@
 
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <h2>Realizar una operación</h2>
+    <div class="container text-center">
+      <br>
+      <br>
+    <h1 class="font-weight-bold">Realizar una operación</h1>
     <br>
     <br>
-    <br>
-    <h4>Elija el tipo de operación que desea realizar</h4>
-    <button on-click="goToDepositMoney" type="button" class="btn btn-primary">Ingreso</button>
-    <button on-click="goToTakeMoney" type="button" class="btn btn-secondary">Reintegro</button>
-    <button on-click="goToTransferrMoney" type="button" class="btn btn-secondary btn-sm">Transferencia</button>
+    <h2>Elija el tipo de operación que desea realizar</h2>
     <br>
     <br>
-    <button on-click="goToHome" type="button" class="btn btn-secondary">Home</button>
-    <button on-click="logout" type="button" class="btn btn-secondary btn-sm">Salir</button>
+    </div>
+    <div class="row">
+      <div class="col-4 text-right">
+    <button on-click="goToDepositMoney" type="button" class="btn btn-lg btn-primary">Ingreso</button>
+  </div>
+  <div class="col-4 text-center">
+    <button on-click="goToTransferrMoney" type="button" class="btn btn-lg btn-primary">Transferencia</button>
+  </div>
+  <div class="col-4 text-left">
+    <button on-click="goToTakeMoney" type="button" class="btn btn-lg btn-primary">Reintegro</button>
+  </div>
+    <br>
+    <br>
+  </div>
+  <br>
+  <br>
+    <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
+    <button on-click="logout" type="button" class="btn btn-danger btn-lg">Salir</button>
 
     <iron-ajax
     id="doLogout"

@@ -129,6 +129,68 @@ function getTransactionsByDni (req,res){
   )
 }
 
+function getTransactionsByDni1 (req,res){
+  var query='q={"DNI1":"'+req.params.DNI+'"}';
+  var sort='s={"date": -1}'
+  console.log(query);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("transaction?"+query+"&"+sort+"&"+mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo movimientos"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Transacciones no encontradas"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
+function getTransactionsByDni2 (req,res){
+  var query='q={"DNI2":"'+req.params.DNI+'"}';
+  var sort='s={"date": -1}'
+  console.log(query);
+
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
+
+  httpClient.get("transaction?"+query+"&"+sort+"&"+mlabAPIKey,
+    function(err,resMlab,body){
+      if (err){
+        var response={
+          "msg":"Error obteniendo movimientos"
+        };
+        res.status(500);
+      }else{
+        if(body.length > 0){
+          var response=body;
+        }else{
+          var response={
+            "msg":"Transacciones no encontradas"
+          };
+          res.status(404);
+          console.log(body);
+        }
+      }
+      res.send(response);
+    }
+  )
+}
+
 function createTransaction (req,res){
   if (req.body.type=="Deposit Money"){
     var date=Date();
@@ -238,3 +300,5 @@ module.exports.getTransactionsByIban=getTransactionsByIban;
 module.exports.getTransactionsByDni=getTransactionsByDni;
 module.exports.getTransactionsByIban1=getTransactionsByIban1;
 module.exports.getTransactionsByIban2=getTransactionsByIban2;
+module.exports.getTransactionsByDni1=getTransactionsByDni1;
+module.exports.getTransactionsByDni2=getTransactionsByDni2;

@@ -9,26 +9,71 @@
       }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <h2>Nombre de cuenta: [[name]]</h2>
-    <h2>IBAN: [[iban]]</h2>
-    <h2>Su saldo es de [[balance]] €</h2>
+<br>
+<br>
+    <div class="container border border-warning text-center">
+      <br>
+      <br>
+      <br>
+    <h1 class="font-weight-bold">Nombre de cuenta: [[name]]</h1>
+    <h1>IBAN: [[iban]]</h1>
+    <h1>Su saldo es de [[balance]] €</h1>
     <br>
+  <br>
+  </div>
+  <br>
+  <br>
+  <div class="container">
+  <div class="row">
+    <div class="col-4 text-right">
+      <br>
     <a href="/depositmoney/{{dni}}">
-      <button  type="button" class="btn btn-primary">Realizar un ingreso</button>
+      <button  type="button" class="btn btn-lg btn-primary">Realizar un ingreso</button>
     </a>
-    <a href="/takemoney/{{dni}}">
-      <button  type="button" class="btn btn-primary">Realizar un reintegro</button>
-    </a>
+    <br>
+  </div>
+  <div class="col-4 text-center">
+    <br>
     <a href="/transferrmoney/{{dni}}">
-      <button  type="button" class="btn btn-primary">Realizar una transferencia</button>
+      <button  type="button" class="btn btn-lg btn-primary">Realizar una transferencia</button>
     </a>
+    <br>
+  </div>
+  <div class="col-4 text-left">
+    <br>
+    <a href="/takemoney/{{dni}}">
+      <button  type="button" class="btn btn-lg btn-primary">Realizar un reintegro</button>
+    </a>
+    <br>
+  </div>
+    </div>
+    <div class="row">
+      <div class="col-6 text-right">
+        <br>
     <a href="/transactions/{{iban}}">
-      <button  type="button" class="btn btn-primary">Ver operaciones</button>
+      <button  type="button" class="btn btn-lg btn-primary">Ver operaciones</button>
     </a>
-      <button on-click="verCuentas" type="button" class="btn btn-primary">Mis cuentas</button>
-      <button on-click="goToHome" type="button" class="btn btn-primary">Home</button>
-      <button on-click="logout" type="button" class="btn btn-primary">Salir</button>
+    <br>
+        </div>
+    <div class="col-6 text-left">
+      <br>
+      <button on-click="verCuentas" type="button" class="btn btn-lg btn-primary">Mis cuentas</button>
+      <br>
+  </div>
+</div>
+    <div class="row">
+      <div class="col-6 text-right">
+      <br>
+      <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
+      <br>
+    </div>
+    <div class="col-6 text-left">
+      <br>
+      <button on-click="logout" type="button" class="btn btn-lg btn-danger">Salir</button>
+      <br>
+      </div>
+    </div>
+</div>
 
     <iron-ajax auto
     id="identifyAccount"

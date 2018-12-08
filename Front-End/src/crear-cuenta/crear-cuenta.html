@@ -17,15 +17,23 @@
   </div>
   <form class="text-center">
     <div class="form-group form-control-lg">
-    <input placeholder="Nombre de la cuenta" type="String" value="{{name::input}}" required><br>
+      <br>
+    <input placeholder="Nombre de la cuenta" type="String" value="{{name::input}}">
+    <br>
   </div>
   <div class="form-group form-control-lg">
-    <input placeholder="Saldo inicial" min="0" type="Number" value="{{balance::input}}" required><span>€</span><br>
-  </div>
-    <button on-click="createAccount" type="submit" class="btn btn-lg btn-primary">Crear</button>
-  </form>
+    <br>
+    <input placeholder="Saldo inicial (€)" min="0" type="Number" value="{{balance::input}}">
+    <br>
     <span hidden$="{{!vacio}}">Todos los campos son obligatorios. El saldo no puede ser negativo</span>
     <span hidden$="{{!creado}}">Cuenta creada con éxito</span>
+  </div>
+  <br>
+  <br>
+    <button on-click="createAccount" type="button" class="btn btn-lg btn-primary">Crear</button>
+    <br>
+    <br>
+  </form>
     <br>
     <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary">Home</button>
     <br>

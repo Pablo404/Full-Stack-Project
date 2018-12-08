@@ -37,6 +37,8 @@ app.get("/proyectotechu/transactionsbyiban/:IBAN", transactionController.getTran
 app.get("/proyectotechu/transactionsbyiban1/:IBAN", transactionController.getTransactionsByIban1);
 app.get("/proyectotechu/transactionsbyiban2/:IBAN", transactionController.getTransactionsByIban2);
 app.get("/proyectotechu/transactions/:DNI", transactionController.getTransactionsByDni);
+app.get("/proyectotechu/transactionsbydni1/:DNI", transactionController.getTransactionsByDni1);
+app.get("/proyectotechu/transactionsbydni2/:DNI", transactionController.getTransactionsByDni2);
 //app.get("/proyectotechu/IBAN", accountController.getIBAN);
 app.post("/proyectotechu/users",userController.createUser);
 app.post("/proyectotechu/accounts",accountController.createAccount);

@@ -10,20 +10,58 @@
 
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <h2>Crear un nuevo usuario</h2>
+    <div class="container text-center">
+      <br>
+    <h1 class="font-weight-bold">Crear un nuevo usuario</h1>
     <br>
-    <input placeholder="Nombre" type="String" value="{{first_name::input}}" required><br>
-    <input placeholder="Apellidos" type="String" value="{{last_name::input}}" required><br>
-    <input placeholder="DNI" type="String" value="{{dni::input}}" required><br>
-    <input placeholder="Email" type="email" value="{{email::input}}" required><br>
-    <input placeholder="Contraseña" type="password" value="{{password::input}}" required><br>
-    <button on-click="createUser" type="button" class="btn btn-primary">Crear</button>
+  </div>
+  <form class="text-center form-group form-control-lg">
+    <div class="row form-group form-control-lg">
+    <div class="col-6 text-right">
+    <input placeholder="Nombre" type="String" value="{{first_name::input}}">
+    <br>
+  </div>
+  <div class="col-6 text-left">
+    <input placeholder="Apellidos" type="String" value="{{last_name::input}}">
+    <br>
+  </div>
+</div>
+<div class="row form-group form-control-lg">
+<div class="col-6 text-right">
+    <input placeholder="DNI" type="String" value="{{dni::input}}">
+    <br>
+  </div>
+  <div class="col-6 text-left">
+    <input placeholder="Email" type="email" value="{{email::input}}">
+    <br>
+  </div>
+</div>
+<div class="row form-group form-control-lg">
+<div class="col-6 text-right">
+    <input placeholder="Contraseña" type="password" value="{{password1::input}}">
+    <br>
+  </div>
+  <div class="col-6 text-left">
+    <input placeholder="Repita su contraseña" type="password" value="{{password2::input}}">
+  </div>
+</div>
+<span hidden$="{{!error}}">Error. Ya existe un usuario registrado con ese email y/o DNI</span>
+<span hidden$="{{!vacio}}">Todos los campos son obligatorios</span>
+<span hidden$="{{!pass}}">Las dos contraseñas tienen que coincidir</span>
+<br>
+<br>
+    <button on-click="createUser" type="button" class="btn btn-lg btn-primary">Crear</button>
+    <br>
+    <br>
+    <br>
+    <div class=text-center>
     <a href="/">
-      <button type="button" class="btn btn-secondary">Inicio</button>
+      <button type="button" class="btn btn-lg btn-secondary">Inicio</button>
     </a>
-    <span hidden$="{{!error}}">Error. Ya existe un usuario registrado con ese email y/o contraseña</span>
-    <span hidden$="{{!vacio}}">Todos los campos son obligatorios</span>
+  </div>
+    </form>
+
+
 
     <iron-ajax
     id="crearUsuario"
@@ -54,12 +92,17 @@
             type:String
           }, email:{
             type:String
-          }, password:{
+          }, password1:{
+            type:String
+          }, password2:{
             type:String
           }, error:{
             type:Boolean,
             value:false
           }, vacio:{
+            type:Boolean,
+            value:false
+          }, pass:{
             type:Boolean,
             value:false
           }
@@ -70,28 +113,35 @@
         console.log("El usuario ha pulsado el botón");
         this.error=false;
         this.vacio=false;
+        this.pass=false;
 
-        if(this.first_name&&this.last_name&&this.dni&&this.email&&this.password){
+        if(this.first_name&&this.last_name&&this.dni&&this.email&&this.password1&&this.password2){
           console.log("Voy a enviar la petición");
           console.log(this.first_name);
           console.log(this.last_name);
           console.log(this.dni);
           console.log(this.email);
-          console.log(this.password);
+          console.log(this.password1);
+          console.log(this.password2);
 
+          if(this.password1===this.password2){
 
-          var userData= {
-            "first_name":this.first_name,
-            "last_name":this.last_name,
-            "DNI":this.dni,
-            "email": this.email,
-            "password" : this.password
-          };
-          console.log(userData);
-          this.$.crearUsuario.body = JSON.stringify(userData);
-          this.$.crearUsuario.generateRequest();
+            var userData= {
+              "first_name":this.first_name,
+              "last_name":this.last_name,
+              "DNI":this.dni,
+              "email": this.email,
+              "password" : this.password1
+            };
+            console.log(userData);
+            this.$.crearUsuario.body = JSON.stringify(userData);
+            this.$.crearUsuario.generateRequest();
 
-          console.log("Petición enviada");
+            console.log("Petición enviada");
+          }else{
+            console.log("Las dos contraseñas tienen que coincidir");
+            this.pass=true;
+          }
         }else{
           console.log("Faltan campos por rellenar");
           this.vacio=true;

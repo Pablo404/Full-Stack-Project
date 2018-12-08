@@ -8,21 +8,21 @@
       :host {
         display: block;
       }
-      
+
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <button on-click="goToHome" type="button" class="btn btn-lg btn-secondary sticky-top">Home</button>
     <button on-click="logout" type="button" class="btn btn-lg btn-danger sticky-top">Salir</button>
-    <div class="container text-center">
-      <div class="row border border-primary">
+    <div class="container">
+      <div class="row border border-primary  text-center">
         <div class="col-12">
-          <h1>Sus operaciones</h1>
-          <h2>Nombre de cuenta: [[name]]</h2>
-          <h3>IBAN: [[iban]]</h3>
-          <h3>Saldo: [[balance]] €</h3>
+          <h1 class="font-weight-bold">Sus operaciones</h1>
+          <h2 class="font-weight-bold">Nombre de cuenta: [[name]]</h2>
+          <h3 class="font-weight-bold">IBAN: [[iban]]</h3>
+          <h3 class="font-weight-bold">Saldo: [[balance]] €</h3>
         </div>
       </div>
-      <div class="row">
+      <div class="row text-center">
         <div class="col-4 border border-success">
           <h3 class="font-weight-bold font-italic">Ingresos/Reintegros</h3>
         </div>
@@ -33,18 +33,18 @@
           <h3 class="font-weight-bold font-italic">Transferencias realizadas</h3>
         </div>
       </div>
-      <div class="row">
+      <div class="row text-center">
         <div class="col-4 border border-secondary">
           <h3 hidden$="{{!notransactions}}">No ha realizado ningún ingreso ni reintegro con esta cuenta</h3>
           <template is="dom-repeat" items="{{transactions}}">
             <div class="border border-secondary border-right-0 border-left-0 border-top-0">
               <br>
-              <br>
-              <h6>Fecha:</h6>
+              <h6><b><i>Fecha:</i></b></h6>
               <h6>{{item.date}}</h6>
-              <h5>Tipo: {{item.name}}</h5>
-              <h4>Cantidad: {{item.amount}} €</h4>
               <br>
+              <h4><b><i>Tipo:</i></b> {{item.name}}</h4>
+              <br>
+              <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
               <br>
             </div>
           </template>
@@ -54,12 +54,15 @@
           <template is="dom-repeat" items="{{transactions1}}">
             <div class="border border-secondary border-right-0 border-left-0 border-top-0">
               <br>
-              <h6>Fecha:</h6>
+              <h6><b><i>Fecha:</i></b></h6>
               <h6>{{item.date}}</h6>
-              <h5>Cuenta origen:</h5>
+              <br>
+              <h6><b><i>Cuenta origen:</i></b></h6>
               <h6>{{item.IBAN2}}</h6>
-              <h5>Concepto: {{item.concept}}</h5>
-              <h4>Cantidad: {{item.amount}} €</h4>
+              <br>
+              <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
+              <br>
+              <h4><b><i>Cantidad:</i></b> {{item.amount}} €</h4>
               <br>
             </div>
           </template>
@@ -69,12 +72,15 @@
           <template is="dom-repeat" items="{{transactions2}}">
             <div class="border border-secondary border-right-0 border-left-0 border-top-0">
               <br>
-              <h6>Fecha:</h6>
+              <h6><b><i>Fecha:</i></b></h6>
               <h6>{{item.date}}</h6>
-              <h5>Cuenta origen:</h5>
+              <br>
+              <h6><b><i>Cuenta destino:</i></b></h6>
               <h6>{{item.IBAN1}}</h6>
-              <h5>Concepto: {{item.concept}}</h5>
-              <h4>Cantidad: {{item.amount}} €</h4>
+              <br>
+              <h5><b><i>Concepto:</i></b> {{item.concept}}</h5>
+              <br>
+              <h4><b><i>Cantidad:</i></b> -{{item.amount}} €</h4>
               <br>
             </div>
           </template>
