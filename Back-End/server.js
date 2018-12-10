@@ -28,9 +28,7 @@ app.get("/proyectotechu/hello",
   }
 );
 app.get("/proyectotechu/users", userController.getUsers);
-// app.get("/proyectotechu/users/:email", userController.getUsersByEmail);
 app.get("/proyectotechu/users/:dni", userController.getUsersByDni);
-//app.get("/apitechu/v2/users/:id", userController.getUserByIdV2);
 app.get("/proyectotechu/accounts/:DNI", accountController.getAccountsByDni);
 app.get("/proyectotechu/account/:IBAN",accountController.getAccountByIban);
 app.get("/proyectotechu/transactionsbyiban/:IBAN", transactionController.getTransactionsByIban);
@@ -39,168 +37,9 @@ app.get("/proyectotechu/transactionsbyiban2/:IBAN", transactionController.getTra
 app.get("/proyectotechu/transactions/:DNI", transactionController.getTransactionsByDni);
 app.get("/proyectotechu/transactionsbydni1/:DNI", transactionController.getTransactionsByDni1);
 app.get("/proyectotechu/transactionsbydni2/:DNI", transactionController.getTransactionsByDni2);
-//app.get("/proyectotechu/IBAN", accountController.getIBAN);
 app.post("/proyectotechu/users",userController.createUser);
 app.post("/proyectotechu/accounts",accountController.createAccount);
 app.put("/proyectotechu/accounts",accountController.modifyAccount);
 app.post("/proyectotechu/transaction",transactionController.createTransaction);
 app.post("/proyectotechu/login",authController.login);
 app.post("/proyectotechu/logout",authController.logout);
-//app.delete("/apitechu/v1/users/:id", userController.deleteUserV1);
-
-
-//funciones del 09/10
-
-/*app.delete("/apitechu/v1/users/:id",
-function (req, res) {
-  console.log("DELETE /apitechu/v1/users/:id");
-  console.log("La id enviada es: "+ req.params.id);
-
-
-
-  var users=require("./usuarios.json");
-
-for (var i=0; i<users.length;i++){
-  if (users[i].id==req.params.id){
-   users.splice(i,1);
-
-   console.log("id encontrado= "+req.params.id);
-   break;
-  }
-  console.log(users[i]);
-}
-
-  //users.splice(req.params.id - 1,1);
-  writeUserDataToFile(users);
-  console.log("Usuario borrado");
-  res.send(users);
-}
-)*/
-
-
-
-
-
-
-
-
-
-//funciones del 09/10
-
-app.post("/apitechu/v1/monstruo/:p1/:p2",
-function(req,res){
-  console.log("POST /apitechu/v1/monstruo/:p1/:p2");
-
-  console.log("Parametros");
-  console.log(req.params);
-
-  console.log("Query String");
-  console.log(req.query);
-
-  console.log("Headers");
-  console.log(req.headers);
-
-  console.log("Body");
-  console.log(req.body);
-}
-);
-/*
-
-app.post("/apitechu/v1/login",
-function(req,res){
-  console.log("POST /apitechu/v1/login");
-
-  console.log("Body");
-  console.log(req.body);
-  var loginemail=false;
-  var loginpassword=false;
-  var users=require('./prueba.json');
-
-  for (user of users){
-    console.log("comparando ("+user.email+") con ("+req.body.email+")");
-    if(user.email==req.body.email){
-      console.log("existe el email");
-      loginemail=true;
-      if (user.password==req.body.password){
-        console.log("contraseña correcta");
-        loginpassword=true;
-        user.logged=true;
-        var idUsuario=user.id;
-        break;
-      }else{
-        console.log("contraseña incorrecta");
-        break;
-      }
-
-
-    }
-  }
-
-  if (loginemail&&loginpassword) {
-    writeUserDataToFileLogin(users);
-    res.send({"mensaje":"Login correcto","idUsuario":idUsuario});
-  }else{
-    res.send({"mensaje":"Login incorrecto"});
-  }
-
-
-
-
-
-
-}
-);
-
-app.post("/apitechu/v1/logout/",
-function(req,res){
-  console.log("POST /apitechu/v1/logout/");
-
-  console.log("Body");
-  console.log(req.body);
-  var logoutemail=false;
-  var logintrue=false;
-  var users=require('./prueba.json');
-
-  for (user of users){
-    console.log("buscando el id: "+req.body.id);
-    if(user.id==req.body.id){
-      console.log("encontrado el id: "+req.body.id);
-      logoutemail=true;
-      if (user.logged){
-        console.log("el usuario sí estaba logeado");
-        logintrue=true;
-        delete user.logged;
-        break;
-      }else{
-        console.log("el usuario no estaba logeado");
-        break;
-      }
-
-
-    }
-  }
-
-  if (logoutemail&&logintrue) {
-    writeUserDataToFileLogin(users);
-    res.send({"mensaje":"Logout correcto","idUsuario":req.body.id});
-  }else{
-    res.send({"mensaje":"Logout incorrecto"});
-  }
-
-
-
-
-
-
-}
-);
-
-hasta aqui es el codigo que entregue en la practica, mas abajo es el 10/10 */
-
-//app.post("/apitechu/v1/login", authController.loginV1);
-//app.post("/apitechu/v1/logout/", authController.logoutV1);
-
-//practica del 17/10
-
-//app.post("/apitechu/v2/login", authController.loginV2);
-//app.post("/apitechu/v2/logout/:id", authController.logoutV2);

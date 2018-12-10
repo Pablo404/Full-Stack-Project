@@ -5,22 +5,6 @@ const mockBaseURL="https://my.api.mockaroo.com/";
 const mlabAPIKey="apiKey="+process.env.MLAB_API_KEY;
 const mockAPIKey="key="+process.env.MOCK_API_KEY;
 
-
-/*function getIBAN (req,res) {
-  console.log("GET /IBAN");
-
-  var httpClient=requestJson.createClient(mockBaseURL);
-  console.log("Client created");
-
-  httpClient.get("IBAN?"+mockAPIKey,
-    function(err,resMlab,body) {
-      var response= !err ?
-        body : {"msg":"Error obteniendo IBAN"}
-      res.send(response);
-    }
-  )
-} */
-
 function createAccount (req, res) {
   console.log("POST /proyectotechu/accounts");
 
@@ -55,20 +39,20 @@ function createAccount (req, res) {
 
 
 function modifyAccount (req,res) {
-console.log("PUT /proyectotechu/accounts");
+  console.log("PUT /proyectotechu/accounts");
 
-var query='q={"IBAN":"'+req.body.IBAN+'"}';
-var httpClient=requestJson.createClient(mlabBaseURL);
-console.log("Client created");
+  var query='q={"IBAN":"'+req.body.IBAN+'"}';
+  var httpClient=requestJson.createClient(mlabBaseURL);
+  console.log("Client created");
 
-httpClient.get("account?"+query + "&" + mlabAPIKey,
-function(err,resMlab,body){
-      console.log(body.length);
-      var newBalance=body[0].balance+req.body.amount;
-      var putBody= '{"$set":{"balance":'+newBalance+'}}';
-      httpClient.put("account?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
-        function(errPUT,resMlabPUT,bodyPUT) {
-          console.log("Saldo de la cuenta actualizado");
+  httpClient.get("account?"+query + "&" + mlabAPIKey,
+  function(err,resMlab,body){
+    console.log(body.length);
+    var newBalance=body[0].balance+req.body.amount;
+    var putBody= '{"$set":{"balance":'+newBalance+'}}';
+    httpClient.put("account?"+query+"&"+mlabAPIKey, JSON.parse(putBody),
+      function(errPUT,resMlabPUT,bodyPUT) {
+        console.log("Saldo de la cuenta actualizado");
         }
       )
     }
@@ -99,8 +83,8 @@ function modifyTwoAccounts (req,res) {
         )
       }
     )
-  httpClient.get("account?"+query2 + "&" + mlabAPIKey,
-  function(err,resMlab,body){
+    httpClient.get("account?"+query2 + "&" + mlabAPIKey,
+    function(err,resMlab,body){
         console.log(body.length);
         var newBalance2=body[0].balance+amount2;
         var putBody2= '{"$set":{"balance":'+newBalance2+'}}';
@@ -111,20 +95,19 @@ function modifyTwoAccounts (req,res) {
         )
       }
     )
-
   }
 
 
-function getAccountsByDni (req,res) {
-  console.log("GET /proyectotechu/accounts/:DNI");
+  function getAccountsByDni (req,res) {
+    console.log("GET /proyectotechu/accounts/:DNI");
 
-  var DNI=req.params.DNI;
-  var query='q={"DNI":"'+DNI+'"}';
+    var DNI=req.params.DNI;
+    var query='q={"DNI":"'+DNI+'"}';
 
-  var httpClient=requestJson.createClient(mlabBaseURL);
-  console.log("Client created");
+    var httpClient=requestJson.createClient(mlabBaseURL);
+    console.log("Client created");
 
-  httpClient.get("account?"+query + "&" + mlabAPIKey,
+    httpClient.get("account?"+query + "&" + mlabAPIKey,
     function(err,resMlab,body){
       if (err){
         var response={
@@ -179,41 +162,8 @@ function getAccountByIban (req,res) {
   )
 }
 
-
-
-  /* function deleteUserV1(req, res) {
-  console.log("DELETE /apitechu/v1/users/:id");
-  console.log("La id enviada es: "+ req.params.id);
-
-
-
-  var users=require("../prueba.json");
-
-users.forEach(function(valor,indice){
-  if (valor.id==req.params.id){
-    console.log(valor);
-    users.splice(indice,1);
-
-  }
-  console.log(users[indice].id);
-});
-
-   console.log("id encontrado= "+req.params.id)
-
-
-
-
-  //users.splice(req.params.id - 1,1);
-  io.writeUserDataToFileLogin(users);
-  console.log("Usuario borrado");
-  res.send(users);
-} */
-
-
-
 module.exports.getAccountsByDni=getAccountsByDni;
 module.exports.getAccountByIban=getAccountByIban;
-    //module.exports.getIBAN=getIBAN;
 module.exports.createAccount=createAccount;
 module.exports.modifyAccount=modifyAccount;
 module.exports.modifyTwoAccounts=modifyTwoAccounts;
